@@ -1,20 +1,12 @@
-from credentials import *
-from TS3Query import TS3Query
+from TS3Bot import TS3Bot
 
 
 def main():
-    connection = TS3Query(SERVER_IP, TELNET_PORT)
-    print(connection.send('whoami'))
+    bot = TS3Bot()
 
-    print('login')
-    print(connection.login(TELNET_LOGIN, TELNET_PW))
+    bot.send_channel_message('Hello channel!')
 
-    print(connection.send('whoami'))
-    print(connection.send(f'use port={SERVER_PORT}'))
-    print(connection.send('whoami'))
-
-    print('logout')
-    print(connection.logout())
+    bot.exit()
 
 
 if __name__ == '__main__':

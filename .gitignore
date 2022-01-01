@@ -132,4 +132,4 @@ dmypy.json
 .idea/
 
 credentials.py
-
+configuration.py
