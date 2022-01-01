@@ -1,5 +1,12 @@
+from TS3Bot import TS3Bot
+
+
 def main():
-    return
+    bot = TS3Bot()
+
+    bot.send_channel_message('Hello channel!')
+
+    bot.exit()
 
 
 if __name__ == '__main__':

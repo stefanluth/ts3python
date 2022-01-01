@@ -130,3 +130,6 @@ dmypy.json
 
 #PyCharm
 .idea/
+
+credentials.py
+configuration.py
