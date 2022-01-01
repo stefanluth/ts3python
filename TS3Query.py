@@ -26,9 +26,28 @@ class TS3Query:
         return self.receive()
 
     def receive(self):
-        match_index, match_object, match_text = self.telnet.expect([br'error id=\d{1,4} msg=.+\n\r'])
+        _index, match_object, match_text = self.telnet.expect([br'error id=\d{1,4} msg=.+\n\r'])
         match_text_string = match_text.decode().strip()
         return match_text_string
+
+    @staticmethod
+    def parse_response(response: str):
+        if response.startswith('error id='):
+            return dict()
+
+        response = response.split('\n\rerror id=')[0]
+        response_list = response.split()
+        response_dict = dict()
+
+        for key_value_pair in response_list:
+            key = key_value_pair.split('=')[0]
+            value = key_value_pair[len(key)+1:]
+            try:
+                response_dict[key] = int(value)
+            except ValueError:
+                response_dict[key] = value.strip()
+
+        return response_dict
 
     def _ignore_welcome_msg(self):
         self.telnet.read_until(b'TS3\n\rWelcome to the TeamSpeak 3 ServerQuery interface, type "help" for a list of '
