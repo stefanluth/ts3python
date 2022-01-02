@@ -11,6 +11,9 @@ def format_value(value: str):
 
 
 class TS3Bot:
+    """
+    An interface to send commands to the server.
+    """
     def __init__(self):
         self.connection = TS3Query(SERVER_IP, TELNET_PORT)
         self.connection.login(TELNET_LOGIN, TELNET_PW)

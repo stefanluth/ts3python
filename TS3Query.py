@@ -1,8 +1,10 @@
 import telnetlib
-import threading
 
 
 class TS3Query:
+    """
+    The telnet connection to the server query interface.
+    """
     def __init__(self, ip='', port=40014):
         """
         :param ip: TeamSpeak 3 server IP address.
@@ -12,7 +14,6 @@ class TS3Query:
         self._skip_welcome_msg()
         self.host = ip
         self.port = port
-        self.lock = threading.Lock()
 
     def login(self, login: str, password: str):
         return self.send(f'login {login} {password}')
