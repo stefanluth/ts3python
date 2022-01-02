@@ -1,7 +1,6 @@
 # TeamSpeak 3 Python Interface
 
 ## About
-<hr style="margin-top: 0">
 
 This is a **very** simple pythonic interface for interacting with the TeamSpeak 3 Server Query.
 <br>
@@ -17,7 +16,6 @@ There are other, **better** interfaces on GitHub, like
 I have resorted to writing my own versions from scratch because those projects were too big for my needs.
 
 ## How to use
-<hr style="margin-top: 0">
 
 ### Create credentials.py
 
@@ -42,18 +40,15 @@ bot.exit()
 ```
 
 ## Questions
-<hr style="margin-top: 0">
 
 If you have questions on how to use this repository, open an issue; I'll be happy to help.
 
 ## Suggestions
-<hr style="margin-top: 0">
 
 If you have feature requests e.g. commands that the TS3Bot doesn't currently support, 
 just create an issue and I'll get to it. Or you can always create a pull request for me to review.
 
 ## License
-<hr style="margin-top: 0">
 
 I just copied the generic Creative Commons Zero license, because it ensures I'm not liable for anything 
 and I don't have to give any warranty that this stuff actually works.
