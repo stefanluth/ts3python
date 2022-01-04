@@ -29,7 +29,7 @@ class TS3Bot:
         return self.connection.send('whoami')
 
     def set_bot_description(self, description: str):
-        return self.update_client_description(self.client_id, description)
+        return self.set_client_description(self.client_id, description)
 
     def set_bot_name(self, name: str):
         return self.edit_client(self.client_id, {'client_nickname': name})
@@ -62,7 +62,11 @@ class TS3Bot:
         parameters_string = dict_to_parameters(parameters)
         return self.connection.send(f'clientedit clid={client_id} {parameters_string}')
 
-    def update_client_description(self, client_id: int, description: str):
+    def rename_client(self, client_id: int, name):
+        formatted_name = format_string(name)
+        return self.connection.send(f'clientedit clid={client_id} client_nickname={formatted_name}')
+
+    def set_client_description(self, client_id: int, description: str):
         formatted_description = format_string(description)
         return self.connection.send(f'clientedit clid={client_id} client_description={formatted_description}')
 
@@ -103,6 +107,18 @@ class TS3Bot:
     def send_private_message(self, client_id: int, msg: str):
         formatted_message = format_string(msg)
         return self.connection.send(f'sendtextmessage targetmode=1 target={client_id} msg={formatted_message}')
+
+    def edit_channel(self, channel_id: int, parameters: dict):
+        parameters_string = dict_to_parameters(parameters)
+        return self.connection.send(f'channeledit cid={channel_id} {parameters_string}')
+
+    def rename_channel(self, channel_id: int, name: str):
+        formatted_name = format_string(name)
+        return self.connection.send(f'channeledit cid={channel_id} channel_name={formatted_name}')
+
+    def set_channel_description(self, channel_id: int, description: str):
+        formatted_description = format_string(description)
+        return self.connection.send(f'channeledit cid={channel_id} channel_description={formatted_description}')
 
     def set_welcome_message(self, msg: str):
         formatted_message = format_string(msg)
