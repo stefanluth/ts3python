@@ -39,13 +39,14 @@ class TS3Query:
         self.lock.acquire()
         encoded_command: bytes = f'{command.strip()}\n'.encode()
         self.telnet.write(encoded_command)
-        return self.receive()
+        response = self.receive()
+        self.lock.release()
+        return response
 
     def receive(self):
         _index, error_id_msg, response_text = self.telnet.expect([br'error id=\d{1,4} msg=.+\n\r'])
         response_text_string = response_text.decode().strip()
         response_dict = self.parse_response(response_text_string)
-        self.lock.release()
         return response_dict
 
     @classmethod
