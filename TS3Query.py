@@ -1,4 +1,5 @@
 import telnetlib
+import threading
 
 
 class TS3Query:
@@ -14,6 +15,7 @@ class TS3Query:
         self._skip_welcome_msg()
         self.host = ip
         self.port = port
+        self.lock = threading.Lock()
 
     def login(self, login: str, password: str):
         return self.send(f'login {login} {password}')
@@ -34,6 +36,7 @@ class TS3Query:
         self.quit()
 
     def send(self, command: str):
+        self.lock.acquire()
         encoded_command: bytes = f'{command.strip()}\n'.encode()
         self.telnet.write(encoded_command)
         return self.receive()
@@ -42,6 +45,7 @@ class TS3Query:
         _index, error_id_msg, response_text = self.telnet.expect([br'error id=\d{1,4} msg=.+\n\r'])
         response_text_string = response_text.decode().strip()
         response_dict = self.parse_response(response_text_string)
+        self.lock.release()
         return response_dict
 
     @classmethod
