@@ -1,4 +1,6 @@
 from credentials import *
+from Client import Client
+from Channel import Channel
 from TS3Query import TS3Query
 
 
@@ -106,3 +108,21 @@ class TS3Bot:
 
     def get_host_banner_image(self):
         return self.connection.send('serverinfo')['virtualserver_hostbanner_gfx_url'].replace('\\', '')
+
+    def create_client_list(self):
+        clients_list = list()
+        for raw_client in self.get_client_list():
+            client_info = self.get_client_info(raw_client['clid'])
+            client = Client(client_id=raw_client['clid'], client_info=client_info)
+            if client.is_query:
+                continue
+            clients_list.append(client)
+        return clients_list
+
+    def create_channel_list(self):
+        channel_list = list()
+        for raw_channel in self.get_channel_list():
+            channel_info = self.get_channel_info(raw_channel['cid'])
+            channel = Channel(channel_id=raw_channel['cid'], channel_info=channel_info)
+            channel_list.append(channel)
+        return channel_list
