@@ -32,6 +32,15 @@ class TS3Bot:
     def set_bot_name(self, name: str):
         return self.update_client(self.client_id, {'client_nickname': name})
 
+    def get_channel_list(self):
+        return self.connection.send('channellist')
+
+    def get_channel_info(self, channel_id: int):
+        return self.connection.send(f'channelinfo cid={channel_id}')
+
+    def get_server_info(self):
+        return self.connection.send('serverinfo')
+
     def get_client_list(self):
         return self.connection.send('clientlist')
 
@@ -83,6 +92,7 @@ class TS3Bot:
         return self.connection.send(f'serveredit virtualserver_hostmessage={formatted_host_message}')
 
     def set_host_message_mode(self, mode: int):
+        """:param mode: 0=none, 1=log, 2=modal, 3=modal quit"""
         if 0 > mode > 3:
             return
         return self.connection.send(f'serveredit virtualserver_hostmessage_mode={mode}')
@@ -93,3 +103,6 @@ class TS3Bot:
 
     def change_host_banner_image(self, image_url: str):
         return self.connection.send(f'serveredit virtualserver_hostbanner_gfx_url={image_url}')
+
+    def get_host_banner_image(self):
+        return self.connection.send('serverinfo')['virtualserver_hostbanner_gfx_url'].replace('\\', '')
