@@ -1,8 +1,8 @@
-from Client import Client
 from datetime import datetime
 import sqlite3
 
-DATABASE_NAME = 'profiles'
+from configuration import DATABASE_NAME
+from Client import Client
 
 
 class Database:
