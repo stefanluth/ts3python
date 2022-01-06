@@ -1,4 +1,5 @@
 from configuration import IDLE_MINUTES_BEFORE_AFK, AFK_CHANNELS
+from TS3Bot import TS3Bot
 
 
 class Client:
@@ -37,3 +38,15 @@ class Client:
         is_muted = input_muted or output_muted or output_only_muted or not input_hw_connected or not output_hw_connected
 
         return is_muted and idle_time_in_minutes > IDLE_MINUTES_BEFORE_AFK / 2
+
+    def move(self, bot: TS3Bot, channel_id):
+        return bot.move_client(self.id, channel_id)
+
+    def kick_from_channel(self, bot: TS3Bot, reason: str):
+        return bot.kick_client_from_channel(self.id, reason)
+
+    def kick_from_server(self, bot: TS3Bot, reason: str):
+        return bot.kick_client_from_server(self.id, reason)
+
+    def ban(self, bot: TS3Bot, duration: int, reason: str):
+        return bot.ban_client(self.id, duration, reason)

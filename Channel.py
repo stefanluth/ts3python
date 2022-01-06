@@ -1,3 +1,7 @@
+from configuration import AFK_CHANNELS
+from TS3Bot import TS3Bot
+
+
 class Channel:
     def __init__(self, channel_id: int, channel_info: dict):
         self.id = channel_id
@@ -19,3 +23,16 @@ class Channel:
         self.is_semi_permanent = bool(channel_info['channel_flag_semi_permanent'])
         self.is_default = bool(channel_info['channel_flag_default'])
         self.has_password = bool(channel_info['channel_flag_password'])
+
+    def rename(self, bot: TS3Bot, name: str):
+        return bot.rename_channel(self.id, name)
+
+    def set_description(self, bot: TS3Bot, description: str):
+        return bot.set_channel_description(self.id, description)
+
+    def edit_channel(self, bot: TS3Bot, parameters: dict):
+        return bot.edit_channel(self.id, parameters)
+
+    @property
+    def is_afk_channel(self):
+        return self.id in AFK_CHANNELS
