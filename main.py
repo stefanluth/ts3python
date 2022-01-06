@@ -1,9 +1,10 @@
 import threading
-from TS3Bot import TS3Bot
 
 from configuration import BOT_NAME
 from modules.move_afk import move_afk
 from modules.holiday_doodle import set_holiday_doodle
+
+from TS3Bot import TS3Bot
 
 
 def main():
