@@ -30,7 +30,7 @@ class Channel:
     def set_description(self, bot: TS3Bot, description: str):
         return bot.set_channel_description(self.id, description)
 
-    def edit_channel(self, bot: TS3Bot, parameters: dict):
+    def edit(self, bot: TS3Bot, parameters: dict):
         return bot.edit_channel(self.id, parameters)
 
     @property
