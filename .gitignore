@@ -133,3 +133,4 @@ dmypy.json
 
 credentials.py
 configuration.py
+profiles.db
