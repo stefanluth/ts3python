@@ -35,7 +35,10 @@ class TS3Bot:
         return self.edit_client(self.client_id, {'client_nickname': name})
 
     def get_channel_list(self):
-        return self.connection.send('channellist')
+        channels = self.connection.send('channellist')
+        if type(channels) == dict:
+            return [channels]
+        return channels
 
     def get_channel_info(self, channel_id: int):
         return self.connection.send(f'channelinfo cid={channel_id}')
@@ -44,7 +47,10 @@ class TS3Bot:
         return self.connection.send('serverinfo')
 
     def get_client_list(self):
-        return self.connection.send('clientlist')
+        clients = self.connection.send('clientlist')
+        if type(clients) == dict:
+            return [clients]
+        return clients
 
     def get_client_id_from_uid(self, client_uid: str):
         return self.connection.send(f'clientgetids cluid={client_uid}')
