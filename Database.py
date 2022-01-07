@@ -18,7 +18,7 @@ class Database:
                                     f'unique_id text,'
                                     f'b64_uid text,'
                                     f'nickname text,'
-                                    f'measurement_start real,'
+                                    f'measurement_start integer,'
                                     f'connected_total real,'
                                     f'connected_afk real'
                                     f')')
@@ -35,7 +35,7 @@ class Database:
                                 f'"{client.uid}",'
                                 f'"{client.b64_uid}",'
                                 f'"{client.name}",'
-                                f'{datetime.now().timestamp()},'
+                                f'{int(datetime.now().timestamp())},'
                                 f'0.0,'
                                 f'0.0)')
 
