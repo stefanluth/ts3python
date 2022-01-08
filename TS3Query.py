@@ -8,8 +8,8 @@ class TS3Query:
     """
     def __init__(self, ip='', port=40014):
         """
-        :param ip: TeamSpeak 3 server IP address.
-        :param port: Telnet port to the given TeamSpeak 3 server.
+        :param ip: TS3 server IP address.
+        :param port: TS3 telnet port.
         """
         self.telnet = telnetlib.Telnet(host=ip, port=port)
         self._skip_welcome_msg()
