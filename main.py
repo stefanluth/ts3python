@@ -1,18 +1,19 @@
 import threading
 
-from credentials import SERVER_IP, SERVER_PORT, TELNET_LOGIN, TELNET_PW, TELNET_PORT
-from configuration import BOT_NAME, DATABASE_NAME
+from credentials import *
+from configuration import BOT_NAME, PROFILES_DB_NAME
 from modules.crackerbarrel_reminder import crackerbarrel_reminder
 from modules.holiday_doodle import set_holiday_doodle
 from modules.move_afk import move_afk
 from modules.time_measurement import start_time_measurement
+from modules.update_wordpress import update_wordpress
 
 from Database import Database
+from WordpressDB import WordpressDB
 from TS3Bot import TS3Bot
 
 
 def main():
-    database = Database(name=DATABASE_NAME)
     bot = TS3Bot(ip=SERVER_IP,
                  port=SERVER_PORT,
                  login=TELNET_LOGIN,
@@ -21,21 +22,28 @@ def main():
 
     bot.set_bot_name(BOT_NAME)
 
+    profile_db = Database(PROFILES_DB_NAME)
+    wordpress_db = WordpressDB(MYSQL_HOST, MYSQL_DB_NAME, MYSQL_USER, MYSQL_PW, 'stats')
+
     crackerbarrel_reminder_thread = threading.Thread(target=crackerbarrel_reminder, kwargs={'bot': bot})
     holiday_doodle_thread = threading.Thread(target=set_holiday_doodle, kwargs={'bot': bot})
     move_afk_thread = threading.Thread(target=move_afk, kwargs={'bot': bot})
-    time_measurement_thread = threading.Thread(target=start_time_measurement, kwargs={'bot': bot,
-                                                                                      'database': database})
+    time_measurement_thread = threading.Thread(target=start_time_measurement,
+                                               kwargs={'bot': bot, 'database': profile_db})
+    wordpress_update_thread = threading.Thread(target=update_wordpress,
+                                               kwargs={'profile_db': profile_db, 'wordpress_db': wordpress_db})
 
     crackerbarrel_reminder_thread.start()
     holiday_doodle_thread.start()
     move_afk_thread.start()
     time_measurement_thread.start()
+    wordpress_update_thread.start()
 
     crackerbarrel_reminder_thread.join()
     holiday_doodle_thread.join()
     move_afk_thread.join()
     time_measurement_thread.join()
+    wordpress_update_thread.join()
 
     bot.exit()
 
