@@ -8,9 +8,9 @@ from modules.move_afk import move_afk
 from modules.time_measurement import start_time_measurement
 from modules.update_wordpress import update_wordpress
 
-from Database import Database
-from WordpressDB import WordpressDB
+from SQLiteDB import SQLiteDB
 from TS3Bot import TS3Bot
+from WordpressDB import WordpressDB
 
 
 def main():
@@ -22,7 +22,7 @@ def main():
 
     bot.set_bot_name(BOT_NAME)
 
-    profile_db = Database(PROFILES_DB_NAME)
+    profile_db = SQLiteDB(PROFILES_DB_NAME)
     wordpress_db = WordpressDB(MYSQL_HOST, MYSQL_DB_NAME, MYSQL_USER, MYSQL_PW, 'stats')
 
     crackerbarrel_reminder_thread = threading.Thread(target=crackerbarrel_reminder, kwargs={'bot': bot})

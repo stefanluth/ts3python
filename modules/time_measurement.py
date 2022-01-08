@@ -1,11 +1,11 @@
 import datetime
 import time
 
-from Database import Database
+from SQLiteDB import SQLiteDB
 from TS3Bot import TS3Bot
 
 
-def start_time_measurement(bot: TS3Bot, database: Database, interval: int):
+def start_time_measurement(bot: TS3Bot, database: SQLiteDB, interval: int):
     first_timecheck = round(datetime.datetime.now().timestamp(), 3)
     while 1:
         clients_b64 = list()

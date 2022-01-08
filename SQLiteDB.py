@@ -4,7 +4,7 @@ import sqlite3
 from Client import Client
 
 
-class Database:
+class SQLiteDB:
     def __init__(self, name):
         self.name = name
         self.connection = sqlite3.connect(f'{self.name}.db', check_same_thread=False)
