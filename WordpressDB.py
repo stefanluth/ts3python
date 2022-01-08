@@ -14,6 +14,3 @@ class WordpressDB:
     def get_post_content(self):
         self.cursor.execute(fr"SELECT `post_content`  FROM `wp_posts` WHERE `post_name` = '{self.post}'")
         return self.cursor.fetchone()
-
-
-
