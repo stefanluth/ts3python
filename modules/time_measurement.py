@@ -4,10 +4,8 @@ import time
 from Database import Database
 from TS3Bot import TS3Bot
 
-from configuration import MEASUREMENT_INTERVAL_SECONDS
 
-
-def start_time_measurement(bot: TS3Bot, database: Database):
+def start_time_measurement(bot: TS3Bot, database: Database, interval: int):
     first_timecheck = round(datetime.datetime.now().timestamp(), 3)
     while 1:
         clients_b64 = list()
@@ -15,7 +13,7 @@ def start_time_measurement(bot: TS3Bot, database: Database):
             database.create_profile(client)
             clients_b64.append(client.b64_uid)
 
-        time.sleep(MEASUREMENT_INTERVAL_SECONDS)
+        time.sleep(interval)
 
         second_timecheck = round(datetime.datetime.now().timestamp(), 3)
         time_difference = round(second_timecheck-first_timecheck, 2)

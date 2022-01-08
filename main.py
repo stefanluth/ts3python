@@ -1,7 +1,7 @@
 import threading
 
 from credentials import *
-from configuration import BOT_NAME, PROFILES_DB_NAME
+from configuration import BOT_NAME, PROFILES_DB_NAME, MEASUREMENT_INTERVAL_SECONDS
 from modules.crackerbarrel_reminder import crackerbarrel_reminder
 from modules.holiday_doodle import set_holiday_doodle
 from modules.move_afk import move_afk
@@ -29,9 +29,16 @@ def main():
     holiday_doodle_thread = threading.Thread(target=set_holiday_doodle, kwargs={'bot': bot})
     move_afk_thread = threading.Thread(target=move_afk, kwargs={'bot': bot})
     time_measurement_thread = threading.Thread(target=start_time_measurement,
-                                               kwargs={'bot': bot, 'database': profile_db})
+                                               kwargs={
+                                                   'bot': bot,
+                                                   'database': profile_db,
+                                                   'interval': MEASUREMENT_INTERVAL_SECONDS,
+                                               })
     wordpress_update_thread = threading.Thread(target=update_wordpress,
-                                               kwargs={'profile_db': profile_db, 'wordpress_db': wordpress_db})
+                                               kwargs={
+                                                   'profile_db': profile_db,
+                                                   'wordpress_db': wordpress_db
+                                               })
 
     crackerbarrel_reminder_thread.start()
     holiday_doodle_thread.start()
