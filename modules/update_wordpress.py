@@ -15,7 +15,11 @@ def update_wordpress(profile_db: SQLiteDB, wordpress_db: WordpressDB, interval: 
     while 1:
         table = HTMLTable(columns=4)
         table.add_header('Rang', 'Name', 'Verbunden', 'Davon AFK')
-        sorted_profiles = sorted(profile_db.get_all_profiles(), key=lambda p: p['connected_total'], reverse=True)
+
+        sorted_profiles = sorted(profile_db.get_all_profiles(),
+                                 key=lambda column: column['connected_total'],
+                                 reverse=True)
+
         for rank, profile in enumerate(sorted_profiles):
             table.add_row(rank+1,
                           profile['nickname'],
