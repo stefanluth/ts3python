@@ -1,18 +1,18 @@
 from datetime import datetime
 import sqlite3
 
-from configuration import DATABASE_NAME
 from Client import Client
 
 
 class Database:
-    def __init__(self):
-        self.connection = sqlite3.connect(f'{DATABASE_NAME}.db', check_same_thread=False)
+    def __init__(self, name):
+        self.name = name
+        self.connection = sqlite3.connect(f'{self.name}.db', check_same_thread=False)
         self.cursor = self.connection.cursor()
 
         with self.connection:
             try:
-                self.cursor.execute(f'CREATE TABLE {DATABASE_NAME} '
+                self.cursor.execute(f'CREATE TABLE {self.name} '
                                     f'('
                                     f'database_id text,'
                                     f'unique_id text,'
@@ -30,7 +30,7 @@ class Database:
             return
 
         with self.connection:
-            self.cursor.execute(f'INSERT INTO {DATABASE_NAME} VALUES ('
+            self.cursor.execute(f'INSERT INTO {self.name} VALUES ('
                                 f'"{client.db_id}",'
                                 f'"{client.uid}",'
                                 f'"{client.b64_uid}",'
@@ -45,7 +45,7 @@ class Database:
         if client is None:
             return
 
-        self.cursor.execute(f'SELECT * FROM {DATABASE_NAME} '
+        self.cursor.execute(f'SELECT * FROM {self.name} '
                             f'WHERE b64_uid="{client.b64_uid}"')
         return self.cursor.fetchone()
 
@@ -53,7 +53,7 @@ class Database:
         if client is None:
             return
         self.cursor.execute(f'SELECT connected_total '
-                            f'FROM {DATABASE_NAME} '
+                            f'FROM {self.name} '
                             f'WHERE b64_uid="{client.b64_uid}"')
         return self.cursor.fetchone()[0]
 
@@ -61,7 +61,7 @@ class Database:
         if client is None:
             return
         self.cursor.execute(f'SELECT connected_afk '
-                            f'FROM {DATABASE_NAME} '
+                            f'FROM {self.name} '
                             f'WHERE b64_uid="{client.b64_uid}"')
         return self.cursor.fetchone()[0]
 
@@ -70,7 +70,7 @@ class Database:
             return
 
         with self.connection:
-            self.cursor.execute(f'UPDATE {DATABASE_NAME} '
+            self.cursor.execute(f'UPDATE {self.name} '
                                 f'SET connected_total = {total} '
                                 f'WHERE b64_uid="{client.b64_uid}"')
 
@@ -81,7 +81,7 @@ class Database:
             return
 
         with self.connection:
-            self.cursor.execute(f'UPDATE {DATABASE_NAME} '
+            self.cursor.execute(f'UPDATE {self.name} '
                                 f'SET connected_afk = {afk} '
                                 f'WHERE b64_uid="{client.b64_uid}"')
 

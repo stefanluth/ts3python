@@ -1,7 +1,7 @@
 import threading
 
 from credentials import SERVER_IP, SERVER_PORT, TELNET_LOGIN, TELNET_PW, TELNET_PORT
-from configuration import BOT_NAME
+from configuration import BOT_NAME, DATABASE_NAME
 from modules.crackerbarrel_reminder import crackerbarrel_reminder
 from modules.holiday_doodle import set_holiday_doodle
 from modules.move_afk import move_afk
@@ -12,12 +12,13 @@ from TS3Bot import TS3Bot
 
 
 def main():
-    database = Database()
+    database = Database(name=DATABASE_NAME)
     bot = TS3Bot(ip=SERVER_IP,
                  port=SERVER_PORT,
                  login=TELNET_LOGIN,
                  password=TELNET_PW,
                  telnet_port=TELNET_PORT)
+
     bot.set_bot_name(BOT_NAME)
 
     crackerbarrel_reminder_thread = threading.Thread(target=crackerbarrel_reminder, kwargs={'bot': bot})
