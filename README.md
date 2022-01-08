@@ -31,9 +31,15 @@ All you really need to do is fill in your credentials (see above) and go for it.
 
 ```
 from TS3Bot import TS3Bot
+from credentials import SERVER_IP, SERVER_PORT, TELNET_LOGIN, TELNET_PW, TELNET_PORT
 from configuration import BOT_NAME
 
-bot = TS3Bot()
+bot = TS3Bot(ip=SERVER_IP,
+             port=SERVER_PORT,
+             login=TELNET_LOGIN,
+             password=TELNET_PW,
+             telnet_port=TELNET_PORT)
+
 bot.set_bot_name(BOT_NAME)
 bot.send_channel_message('Hello channel!')
 bot.exit()
