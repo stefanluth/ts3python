@@ -14,7 +14,7 @@ There are other, **better** interfaces on GitHub, like
 <a href='https://github.com/Murgeye/teamspeak3-python-api'>API</a> and
 <a href='https://github.com/Murgeye/teamspeak3-python-bot'>Bot</a>.
 <br>
-I have resorted to writing my own versions from scratch because those projects were too big for my needs.
+I have resorted to writing my own versions from scratch because those projects were too big and extensive for my needs.
 
 ## Modules
 The project used to be limited to the `TS3Bot` and `TS3Query` classes but as I worked on it,
@@ -73,6 +73,9 @@ If you have questions on how to use this repository, open an issue; I'll be happ
 If you have feature requests e.g. commands that the TS3Bot doesn't currently support or a module you need,
 just create an issue and I'll check it out. Or you can always create a pull request for me to review, if you
 have written your own solution to a problem you had and think others would want it too.
+<br><br>
+And ~~if~~ **when** you find ways to improve the code, please open a PR and let me know about it, 
+I love to learn and I know my code is far from perfect.
 
 ## License
 
