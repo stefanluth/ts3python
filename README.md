@@ -83,7 +83,7 @@ If you have questions on how to use this repository, open an issue; I'll be happ
 
 ## Suggestions
 
-If you have feature requests e.g. commands that the TS3Bot doesn't currently support or a module you need,
+If you have feature requests e.g. commands that the `TS3Bot` doesn't currently support or a module you need,
 just create an issue and I'll check it out. Or you can always create a pull request for me to review, if you
 have written your own solution to a problem you had and think others would want it too.
 <br><br>
