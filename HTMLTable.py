@@ -1,4 +1,5 @@
 class HTMLTable:
+    """Class to easily generate a ranking table in HTML for WordPress"""
     def __init__(self, columns: int):
         self.columns = columns
         self.header = str()
