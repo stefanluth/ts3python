@@ -1,5 +1,6 @@
 from Client import Client
 from Channel import Channel
+from Message import Message
 from TS3Query import TS3Query
 
 
@@ -29,6 +30,44 @@ class TS3Bot:
         self.connection.use(port=port)
         self.client_id = self.whoami()['client_id']
 
+    @property
+    def messages(self):
+        messages = list()
+
+        for message in self.connection.messages:
+            if message['invokerid'] == self.client_id:
+                continue
+            messages.append(Message(message))
+        return messages
+
+    def enable_receive_private_messages(self):
+        return self.connection.send('servernotifyregister event=textprivate')
+
+    def enable_receive_channel_messages(self):
+        return self.connection.send('servernotifyregister event=textchannel')
+
+    def enable_receive_server_messages(self):
+        return self.connection.send('servernotifyregister event=textserver')
+
+    def disable_receive_private_messages(self):
+        return self.connection.send('servernotifyunregister event=textprivate')
+
+    def disable_receive_channel_messages(self):
+        return self.connection.send('servernotifyunregister event=textchannel')
+
+    def disable_receive_server_messages(self):
+        return self.connection.send('servernotifyunregister event=textserver')
+
+    def enable_receive_all_messages(self):
+        self.enable_receive_private_messages()
+        self.enable_receive_channel_messages()
+        self.enable_receive_server_messages()
+
+    def disable_receive_all_messages(self):
+        self.disable_receive_private_messages()
+        self.disable_receive_channel_messages()
+        self.disable_receive_server_messages()
+
     def exit(self):
         self.connection.exit()
 
@@ -39,7 +78,8 @@ class TS3Bot:
         return self.set_client_description(self.client_id, description)
 
     def set_bot_name(self, name: str):
-        return self.edit_client(self.client_id, {'client_nickname': name})
+        formatted_name = format_string(name)
+        return self.connection.send(f'clientupdate client_nickname={formatted_name}')
 
     def get_channel_list(self):
         channels = self.connection.send('channellist')
@@ -54,7 +94,7 @@ class TS3Bot:
         return self.connection.send('serverinfo')
 
     def get_client_list(self):
-        clients = self.connection.send('clientlist')
+        clients = self.connection.send('clientlist -uid -away -voice -times -groups -info -country -ip -icon -badges')
         if type(clients) == dict:
             return [clients]
         return clients
@@ -109,17 +149,17 @@ class TS3Bot:
         formatted_reason = format_string(reason)
         return self.connection.send(f'banclient clid={client_id} time={duration} banreason={formatted_reason}')
 
-    def send_server_message(self, msg: str):
+    def send_private_message(self, client_id: int, msg: str):
         formatted_message = format_string(msg)
-        return self.connection.send(f'sendtextmessage targetmode=3 msg={formatted_message}')
+        return self.connection.send(f'sendtextmessage targetmode=1 target={client_id} msg={formatted_message}')
 
     def send_channel_message(self, msg: str):
         formatted_message = format_string(msg)
         return self.connection.send(f'sendtextmessage targetmode=2 msg={formatted_message}')
 
-    def send_private_message(self, client_id: int, msg: str):
+    def send_server_message(self, msg: str):
         formatted_message = format_string(msg)
-        return self.connection.send(f'sendtextmessage targetmode=1 target={client_id} msg={formatted_message}')
+        return self.connection.send(f'sendtextmessage targetmode=3 msg={formatted_message}')
 
     def edit_channel(self, channel_id: int, parameters: dict):
         parameters_string = dict_to_parameters(parameters)
@@ -159,9 +199,9 @@ class TS3Bot:
 
     def create_client_list(self):
         clients_list = list()
-        for raw_client in self.get_client_list():
-            client_info = self.get_client_info(raw_client['clid'])
-            client = Client(client_id=raw_client['clid'], client_info=client_info)
+        for client_dict in self.get_client_list():
+            client_info = self.get_client_info(client_dict['clid'])
+            client = Client(client_id=client_dict['clid'], client_info=client_info)
             if client.is_query:
                 continue
             clients_list.append(client)

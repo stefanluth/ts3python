@@ -9,7 +9,9 @@ class Client:
         self.b64_uid = client_info['client_base64HashClientUID']
         self.name = client_info['client_nickname']
         self.channel_id = client_info['cid']
+        self.idle_time = client_info['client_idle_time'] / 1000
         self.is_query = bool(client_info['client_type'])
+        self.is_away = bool(client_info['client_away'])
         self.info = client_info
 
     @property
@@ -21,19 +23,18 @@ class Client:
         if self.in_afk_channel:
             return True
 
-        idle_time_in_seconds = self.info['client_idle_time'] / 1000
-        idle_time_in_minutes = idle_time_in_seconds / 60
-        is_away = bool(self.info['client_away'])
+        idle_minutes = self.idle_time / 60
 
-        if idle_time_in_minutes > IDLE_MINUTES_BEFORE_AFK or is_away:
+        if idle_minutes > IDLE_MINUTES_BEFORE_AFK or self.is_away:
             return True
 
+        return self.is_muted and idle_minutes > IDLE_MINUTES_BEFORE_AFK / 2
+
+    @property
+    def is_muted(self):
         input_muted = bool(self.info['client_input_muted'])
         output_muted = bool(self.info['client_output_muted'])
         output_only_muted = bool(self.info['client_outputonly_muted'])
         input_hw_connected = bool(self.info['client_input_hardware'])
         output_hw_connected = bool(self.info['client_output_hardware'])
-
-        is_muted = input_muted or output_muted or output_only_muted or not input_hw_connected or not output_hw_connected
-
-        return is_muted and idle_time_in_minutes > IDLE_MINUTES_BEFORE_AFK / 2
+        return input_muted or output_muted or output_only_muted or not input_hw_connected or not output_hw_connected

@@ -21,6 +21,7 @@ def main():
                  telnet_port=TELNET_PORT)
 
     bot.set_bot_name(BOT_NAME)
+    bot.enable_receive_all_messages()
 
     profile_db = SQLiteDB(PROFILES_DB_NAME)
     wordpress_db = WordpressDB(MYSQL_HOST, MYSQL_DB_NAME, MYSQL_USER, MYSQL_PW, 'stats')
