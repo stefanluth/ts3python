@@ -32,13 +32,7 @@ class TS3Bot:
 
     @property
     def messages(self):
-        messages = list()
-
-        for message in self.connection.messages:
-            if message['invokerid'] == self.client_id:
-                continue
-            messages.append(Message(message))
-        return messages
+        return [Message(message) for message in self.connection.messages if message['invokerid'] != self.client_id]
 
     def enable_receive_private_messages(self):
         return self.connection.send('servernotifyregister event=textprivate')
