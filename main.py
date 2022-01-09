@@ -43,16 +43,16 @@ def main():
                                                    'interval': WORDPRESS_UPDATE_INTERVAL_SECONDS,
                                                })
 
-    # crackerbarrel_reminder_thread.start()
-    # holiday_doodle_thread.start()
-    # move_afk_thread.start()
-    # time_measurement_thread.start()
+    crackerbarrel_reminder_thread.start()
+    holiday_doodle_thread.start()
+    move_afk_thread.start()
+    time_measurement_thread.start()
     wordpress_update_thread.start()
 
-    # crackerbarrel_reminder_thread.join()
-    # holiday_doodle_thread.join()
-    # move_afk_thread.join()
-    # time_measurement_thread.join()
+    crackerbarrel_reminder_thread.join()
+    holiday_doodle_thread.join()
+    move_afk_thread.join()
+    time_measurement_thread.join()
     wordpress_update_thread.join()
 
     bot.exit()
