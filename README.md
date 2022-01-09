@@ -16,24 +16,6 @@ There are other, **better** interfaces on GitHub, like
 <br>
 I have resorted to writing my own versions from scratch because those projects were too big and extensive for my needs.
 
-## Modules
-The project used to be limited to the `TS3Bot` and `TS3Query` classes but as I worked on it,
-I added modules I thought others would want to use as well, especially the `move_afk` module.
-<br><br>
-The other modules - namely `time_measurement`, `crackerbarrel_reminder`, `holiday_doodle` and `update_wordpress` -
-are rather specific for my circle of friends' TS3 server:
-1. We update our host banner for special occasions, an homage to Google's doodles, which is what the `holiday_doodle`
-module is for.
-2. Since the pandemic we have established a monthly crackerbarrel meeting at the last wednesday of each month.
-We (actually just me) like to forget it, so that's what the `crackerbarrel_reminder` module is for.
-3. Being a group consisting mostly of gamers, we tend to spend a lot of time online and on the server.
-To keep track of our addiction, I made the `time_measurement` module. This actually was the main reason for creating the bot.
-4. To display our time rankings, we used to update the description of a channel within the server itself.
-To enable prettier formatting and easier accessibility we now use our WordPress website, hence the `update_wordpress` module.
-
-I understand that these use cases are extremely specific. These modules are meant to be a source of inspiration for
-others to write their own modules, tailored to their own, extremely specific, needs.
-
 ## How to use
 
 ### 1. Create credentials.py
@@ -63,6 +45,24 @@ bot.set_bot_name(BOT_NAME)
 bot.send_channel_message('Hello channel!')
 bot.exit()
 ```
+
+## Modules
+The project used to be limited to the `TS3Bot` and `TS3Query` classes but as I worked on it,
+I added modules I thought others would want to use as well, especially the `move_afk` module.
+<br><br>
+The other modules - namely `time_measurement`, `crackerbarrel_reminder`, `holiday_doodle` and `update_wordpress` -
+are rather specific for my circle of friends' TS3 server:
+1. We update our host banner for special occasions, an homage to Google's doodles, which is what the `holiday_doodle`
+module is for.
+2. Since the pandemic we have established a monthly crackerbarrel meeting at the last wednesday of each month.
+We (actually just me) like to forget it, so that's what the `crackerbarrel_reminder` module is for.
+3. Being a group consisting mostly of gamers, we tend to spend a lot of time online and on the server.
+To keep track of our addiction, I made the `time_measurement` module. This actually was the main reason for creating the bot.
+4. To display our time rankings, we used to update the description of a channel within the server itself.
+To enable prettier formatting and easier accessibility we now use our WordPress website, hence the `update_wordpress` module.
+
+I understand that these use cases are extremely specific. These modules are meant to be a source of inspiration for
+others to write their own modules, tailored to their own, extremely specific, needs.
 
 ## Questions
 
