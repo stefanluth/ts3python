@@ -1,7 +1,8 @@
 import threading
 
-from credentials import *
 from configuration import BOT_NAME, PROFILES_DB_NAME, MEASUREMENT_INTERVAL_SECONDS, WORDPRESS_UPDATE_INTERVAL_SECONDS
+from credentials import *
+
 from modules.crackerbarrel_reminder import crackerbarrel_reminder
 from modules.holiday_doodle import set_holiday_doodle
 from modules.move_afk import move_afk
@@ -42,16 +43,16 @@ def main():
                                                    'interval': WORDPRESS_UPDATE_INTERVAL_SECONDS,
                                                })
 
-    crackerbarrel_reminder_thread.start()
-    holiday_doodle_thread.start()
-    move_afk_thread.start()
-    time_measurement_thread.start()
+    # crackerbarrel_reminder_thread.start()
+    # holiday_doodle_thread.start()
+    # move_afk_thread.start()
+    # time_measurement_thread.start()
     wordpress_update_thread.start()
 
-    crackerbarrel_reminder_thread.join()
-    holiday_doodle_thread.join()
-    move_afk_thread.join()
-    time_measurement_thread.join()
+    # crackerbarrel_reminder_thread.join()
+    # holiday_doodle_thread.join()
+    # move_afk_thread.join()
+    # time_measurement_thread.join()
     wordpress_update_thread.join()
 
     bot.exit()
