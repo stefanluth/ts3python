@@ -6,7 +6,7 @@ class TS3Query:
     """
     The telnet connection to the server query interface.
     """
-    def __init__(self, ip='', port=40014):
+    def __init__(self, ip: str, port: int):
         """
         :param ip: TS3 server IP address.
         :param port: TS3 telnet port.
@@ -24,7 +24,7 @@ class TS3Query:
     def use(self, server_id=0, port=0):
         if port:
             return self.send(f'use port={port}')
-        return self.send(f'use {server_id}')
+        return self.send(f'use sid={server_id}')
 
     def logout(self):
         return self.send('logout')
@@ -32,7 +32,7 @@ class TS3Query:
     def quit(self):
         return self.send('quit')
 
-    def exit(self):
+    def exit(self) -> None:
         self.logout()
         self.quit()
 
@@ -42,13 +42,11 @@ class TS3Query:
         self.telnet.write(encoded_command)
         response = self.receive()
         self.lock.release()
-        return response
+        return self.parse_response(response)
 
-    def receive(self):
-        _index, error_id_msg, response_text = self.telnet.expect([br'error id=\d{1,4} msg=.+\n\r'])
-        response_text_string = response_text.decode().strip()
-        response_dict = self.parse_response(response_text_string)
-        return response_dict
+    def receive(self) -> str:
+        _index, error_id_msg, response = self.telnet.expect([br'error id=\d{1,4} msg=.+\n\r'])
+        return response.decode().strip()
 
     def parse_response(self, response: str):
         if response.startswith('error id='):
@@ -60,21 +58,19 @@ class TS3Query:
         else:
             response, error_id = response.split('\n\r')
 
-        response_entries = response.split('|')
+        response_list = response.split('|')
 
-        if len(response_entries) > 1:
-            dict_list = [self.dict_from_list(response_entry.split()) for response_entry in response_entries]
-            return dict_list
+        if len(response_list) == 1:
+            return self.dict_from_list(response.split())
 
-        response_list = response.split()
-        return self.dict_from_list(response_list)
+        return [self.dict_from_list(response.split()) for response in response_list]
 
     @property
-    def messages(self):
+    def messages(self) -> list[dict]:
         return [self.dict_from_list(message.split()) for message in self.messages_raw]
 
     @staticmethod
-    def dict_from_list(keys_values: list):
+    def dict_from_list(keys_values: list) -> dict:
         response_dict = dict()
 
         for key_value_pair in keys_values:
@@ -87,6 +83,6 @@ class TS3Query:
 
         return response_dict
 
-    def _skip_welcome_msg(self):
+    def _skip_welcome_msg(self) -> None:
         self.telnet.read_until(b'TS3\n\rWelcome to the TeamSpeak 3 ServerQuery interface, type "help" for a list of '
                                b'commands and "help <command>" for information on a specific command.\n\r')

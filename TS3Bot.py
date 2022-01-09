@@ -200,7 +200,6 @@ class TS3Bot:
     def create_client_list(self):
         clients_list = list()
         for client_dict in self.get_client_list():
-            print(client_dict)
             client_info = self.get_client_info(client_dict['clid'])
             client = Client(client_id=client_dict['clid'], client_info=client_info)
             if client.is_query:
