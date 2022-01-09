@@ -64,6 +64,21 @@ To enable prettier formatting and easier accessibility we now use our WordPress 
 I understand that these use cases are extremely specific. These modules are meant to be a source of inspiration for
 others to write their own modules, tailored to their own, extremely specific, needs.
 
+## Dependencies
+
+The only dependency in this project is in the `WordpressDB` class which needs the `mysql-connector-python` package to 
+access the WordPress posts. So if you're not going to use it, you shouldn't need to install anything. 
+If you want to use it, run
+```
+pip3 install -r requirements.txt
+``` 
+or directly install the package with
+```
+pip3 install mysql-connector-python
+```
+
+
+
 ## Questions
 
 If you have questions on how to use this repository, open an issue; I'll be happy to help.
