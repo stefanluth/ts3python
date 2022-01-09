@@ -54,14 +54,14 @@ The other modules - namely `time_measurement`, `crackerbarrel_reminder`, `holida
 are rather specific for my circle of friends' TS3 server:
 1. We update our host banner for special occasions, an homage to Google's doodles, which is what the `holiday_doodle`
 module is for.
-2. Since the pandemic we have established a monthly crackerbarrel meeting at the last wednesday of each month.
+2. During the pandemic, we have established a monthly crackerbarrel meeting on the last Wednesday of each month.
 We (actually just me) like to forget it, so that's what the `crackerbarrel_reminder` module is for.
 3. Being a group consisting mostly of gamers, we tend to spend a lot of time online and on the server.
-To keep track of our addiction, I made the `time_measurement` module. This actually was the main reason for creating the bot.
+To keep track of our addiction, I made the `time_measurement` module. This actually was the main impulse for creating the bot.
 4. To display our time rankings, we used to update the description of a channel within the server itself.
 To enable prettier formatting and easier accessibility we now use our WordPress website, hence the `update_wordpress` module.
 
-I understand that these use cases are extremely specific. These modules are meant to be a source of inspiration for
+I understand that those use cases are extremely specific. The modules are meant to be a source of inspiration for
 others to write their own modules, tailored to their own, extremely specific, needs.
 
 ## Dependencies
@@ -85,9 +85,9 @@ If you have questions on how to use this repository, open an issue; I'll be happ
 
 If you have feature requests e.g. commands that the `TS3Bot` doesn't currently support or a module you need,
 just create an issue and I'll check it out. Or you can always create a pull request for me to review, if you
-have written your own solution to a problem you had and think others would want it too.
+have written your own solution to a problem that you had and believe others could benefit from it too.
 <br><br>
-And ~~if~~ **when** you find ways to improve the code, please open a PR and let me know about it, 
+And ~~if~~ **when** you find ways to improve the code, please open a PR and let me know about it;
 I love to learn and I know my code is far from perfect.
 
 ## License
