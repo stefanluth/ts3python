@@ -31,7 +31,7 @@ class TS3Bot:
         self.client_id = self.whoami()['client_id']
 
     @property
-    def messages(self) -> list[Message]:
+    def messages(self) -> list:
         return [Message(message) for message in self.connection.messages if message['invokerid'] != self.client_id]
 
     def enable_receive_private_messages(self):
@@ -191,7 +191,7 @@ class TS3Bot:
     def get_host_banner_image(self):
         return self.connection.send('serverinfo')['virtualserver_hostbanner_gfx_url'].replace('\\', '')
 
-    def create_client_list(self) -> list[Client]:
+    def create_client_list(self) -> list:
         clients_list = list()
         for client_dict in self.get_client_list():
             client_info = self.get_client_info(client_dict['clid'])
@@ -201,7 +201,7 @@ class TS3Bot:
             clients_list.append(client)
         return clients_list
 
-    def create_channel_list(self) -> list[Channel]:
+    def create_channel_list(self) -> list:
         channel_list = list()
         for raw_channel in self.get_channel_list():
             channel_info = self.get_channel_info(raw_channel['cid'])
