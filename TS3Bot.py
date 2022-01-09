@@ -75,7 +75,7 @@ class TS3Bot:
         formatted_name = format_string(name)
         return self.connection.send(f'clientupdate client_nickname={formatted_name}')
 
-    def get_channel_list(self) -> list[dict]:
+    def get_channel_list(self) -> list:
         channels = self.connection.send('channellist')
         if type(channels) == dict:
             return [channels]
@@ -87,7 +87,7 @@ class TS3Bot:
     def get_server_info(self):
         return self.connection.send('serverinfo')
 
-    def get_client_list(self) -> list[dict]:
+    def get_client_list(self) -> list:
         clients = self.connection.send('clientlist -uid -away -voice -times -groups -info -country -ip -icon -badges')
         if type(clients) == dict:
             return [clients]

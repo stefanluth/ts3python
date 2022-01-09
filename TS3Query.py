@@ -66,7 +66,7 @@ class TS3Query:
         return [self.dict_from_list(response.split()) for response in response_list]
 
     @property
-    def messages(self) -> list[dict]:
+    def messages(self) -> list:
         return [self.dict_from_list(message.split()) for message in self.messages_raw]
 
     @staticmethod
