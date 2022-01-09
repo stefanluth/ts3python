@@ -9,7 +9,9 @@ I felt like other's might find it useful, so I made it public.
 <br>
 <br>
 There are other, **better** interfaces on GitHub, like 
-<a href='https://github.com/Murgeye'>@Murgeye's</a> excellent 
+<a href='https://github.com/benediktschmitt'>@benediktschmitt's</a> excellent
+<a href='https://github.com/benediktschmitt/py-ts3/tree/v2'>API</a> or 
+<a href='https://github.com/Murgeye'>@Murgeye's</a> 
 <a href='https://github.com/Murgeye/teamspeak3-python-api'>API</a> and 
 <a href='https://github.com/Murgeye/teamspeak3-python-bot'>Bot</a>.
 <br>
