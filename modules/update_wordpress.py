@@ -14,17 +14,17 @@ def format_time_from_seconds(seconds):
 def update_wordpress(profile_db: SQLiteDB, wordpress_db: WordpressDB, interval: int):
     while 1:
         table = HTMLTable(columns=4)
-        table.add_header('Rang', 'Name', 'Verbunden', 'Davon AFK')
+        table.add_header('Rang', 'Name', 'Verbunden', 'Davon aktiv')
 
         sorted_profiles = sorted(profile_db.get_all_profiles(),
-                                 key=lambda column: column['connected_total'],
+                                 key=lambda column: column['connected_total']-column['connected_afk'],
                                  reverse=True)
 
         for rank, profile in enumerate(sorted_profiles):
             table.add_row(rank+1,
                           profile['nickname'],
                           format_time_from_seconds(profile['connected_total']),
-                          format_time_from_seconds(profile['connected_afk']))
+                          format_time_from_seconds(profile['connected_total']-profile['connected_afk']))
 
         table_html = table.generate()
         wordpress_db.update_post_content(table_html)

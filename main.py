@@ -1,7 +1,8 @@
 import threading
 
-from credentials import *
 from configuration import BOT_NAME, PROFILES_DB_NAME, MEASUREMENT_INTERVAL_SECONDS, WORDPRESS_UPDATE_INTERVAL_SECONDS
+from credentials import *
+
 from modules.crackerbarrel_reminder import crackerbarrel_reminder
 from modules.holiday_doodle import set_holiday_doodle
 from modules.move_afk import move_afk
