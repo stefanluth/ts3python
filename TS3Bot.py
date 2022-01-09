@@ -31,14 +31,8 @@ class TS3Bot:
         self.client_id = self.whoami()['client_id']
 
     @property
-    def messages(self):
-        messages = list()
-
-        for message in self.connection.messages:
-            if message['invokerid'] == self.client_id:
-                continue
-            messages.append(Message(message))
-        return messages
+    def messages(self) -> list[Message]:
+        return [Message(message) for message in self.connection.messages if message['invokerid'] != self.client_id]
 
     def enable_receive_private_messages(self):
         return self.connection.send('servernotifyregister event=textprivate')
@@ -81,7 +75,7 @@ class TS3Bot:
         formatted_name = format_string(name)
         return self.connection.send(f'clientupdate client_nickname={formatted_name}')
 
-    def get_channel_list(self):
+    def get_channel_list(self) -> list[dict]:
         channels = self.connection.send('channellist')
         if type(channels) == dict:
             return [channels]
@@ -93,7 +87,7 @@ class TS3Bot:
     def get_server_info(self):
         return self.connection.send('serverinfo')
 
-    def get_client_list(self):
+    def get_client_list(self) -> list[dict]:
         clients = self.connection.send('clientlist -uid -away -voice -times -groups -info -country -ip -icon -badges')
         if type(clients) == dict:
             return [clients]
@@ -197,7 +191,7 @@ class TS3Bot:
     def get_host_banner_image(self):
         return self.connection.send('serverinfo')['virtualserver_hostbanner_gfx_url'].replace('\\', '')
 
-    def create_client_list(self):
+    def create_client_list(self) -> list[Client]:
         clients_list = list()
         for client_dict in self.get_client_list():
             client_info = self.get_client_info(client_dict['clid'])
@@ -207,7 +201,7 @@ class TS3Bot:
             clients_list.append(client)
         return clients_list
 
-    def create_channel_list(self):
+    def create_channel_list(self) -> list[Channel]:
         channel_list = list()
         for raw_channel in self.get_channel_list():
             channel_info = self.get_channel_info(raw_channel['cid'])

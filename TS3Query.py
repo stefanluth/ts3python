@@ -12,7 +12,7 @@ class TS3Query:
         :param port: TS3 telnet port.
         """
         self.telnet = telnetlib.Telnet(host=ip, port=port)
-        self._skip_welcome_msg()
+        self._skip_greeting()
         self.host = ip
         self.port = port
         self.lock = threading.Lock()
@@ -83,6 +83,6 @@ class TS3Query:
 
         return response_dict
 
-    def _skip_welcome_msg(self) -> None:
+    def _skip_greeting(self) -> None:
         self.telnet.read_until(b'TS3\n\rWelcome to the TeamSpeak 3 ServerQuery interface, type "help" for a list of '
                                b'commands and "help <command>" for information on a specific command.\n\r')
