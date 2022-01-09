@@ -68,7 +68,7 @@ others to write their own modules, tailored to their own, extremely specific, ne
 
 The only dependency in this project is in the `WordpressDB` class which needs the `mysql-connector-python` package to 
 access the WordPress posts. So if you're not going to use it, you shouldn't need to install anything. 
-If you want to use it, run
+If you want to use it, either run
 ```
 pip3 install -r requirements.txt
 ``` 
@@ -76,8 +76,6 @@ or directly install the package with
 ```
 pip3 install mysql-connector-python
 ```
-
-
 
 ## Questions
 
