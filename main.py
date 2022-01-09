@@ -1,16 +1,12 @@
 import threading
+import time
 
 from credentials import *
-from configuration import BOT_NAME, PROFILES_DB_NAME, MEASUREMENT_INTERVAL_SECONDS, WORDPRESS_INTERVAL_SECONDS
-from modules.crackerbarrel_reminder import crackerbarrel_reminder
-from modules.holiday_doodle import set_holiday_doodle
-from modules.move_afk import move_afk
+from configuration import BOT_NAME, PROFILES_DB_NAME, MEASUREMENT_INTERVAL_SECONDS
 from modules.time_measurement import start_time_measurement
-from modules.update_wordpress import update_wordpress
 
 from SQLiteDB import SQLiteDB
 from TS3Bot import TS3Bot
-from WordpressDB import WordpressDB
 
 
 def main():
@@ -22,36 +18,34 @@ def main():
 
     bot.set_bot_name(BOT_NAME)
 
-    profile_db = SQLiteDB(PROFILES_DB_NAME)
-    wordpress_db = WordpressDB(MYSQL_HOST, MYSQL_DB_NAME, MYSQL_USER, MYSQL_PW, 'stats')
+    bot.enable_receive_all_messages()
 
-    crackerbarrel_reminder_thread = threading.Thread(target=crackerbarrel_reminder, kwargs={'bot': bot})
-    holiday_doodle_thread = threading.Thread(target=set_holiday_doodle, kwargs={'bot': bot})
-    move_afk_thread = threading.Thread(target=move_afk, kwargs={'bot': bot})
+    profile_db = SQLiteDB(PROFILES_DB_NAME)
+
     time_measurement_thread = threading.Thread(target=start_time_measurement,
                                                kwargs={
                                                    'bot': bot,
                                                    'database': profile_db,
                                                    'interval': MEASUREMENT_INTERVAL_SECONDS,
                                                })
-    wordpress_update_thread = threading.Thread(target=update_wordpress,
-                                               kwargs={
-                                                   'profile_db': profile_db,
-                                                   'wordpress_db': wordpress_db,
-                                                   'interval': WORDPRESS_INTERVAL_SECONDS,
-                                               })
 
-    crackerbarrel_reminder_thread.start()
-    holiday_doodle_thread.start()
-    move_afk_thread.start()
-    time_measurement_thread.start()
-    wordpress_update_thread.start()
+    # time_measurement_thread.start()
+    # time_measurement_thread.join()
 
-    crackerbarrel_reminder_thread.join()
-    holiday_doodle_thread.join()
-    move_afk_thread.join()
-    time_measurement_thread.join()
-    wordpress_update_thread.join()
+    print(bot.get_client_list())
+
+    time.sleep(5)
+
+    bot.whoami()
+
+    for message in bot.messages:
+        print(message.raw)
+        if message.type == 'private':
+            bot.send_private_message(message.invoker_id, f'hallo {message.invoker_name}')
+        elif message.type == 'channel':
+            bot.send_channel_message('hallo channel')
+
+    time.sleep(5)
 
     bot.exit()
 

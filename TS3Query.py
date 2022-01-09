@@ -16,6 +16,7 @@ class TS3Query:
         self.host = ip
         self.port = port
         self.lock = threading.Lock()
+        self.messages_raw = list()
 
     def login(self, login: str, password: str):
         return self.send(f'login {login} {password}')
@@ -49,20 +50,33 @@ class TS3Query:
         response_dict = self.parse_response(response_text_string)
         return response_dict
 
-    @classmethod
-    def parse_response(cls, response: str):
+    def parse_response(self, response: str):
         if response.startswith('error id='):
             return dict()
+        if response.startswith('notifytextmessage'):
+            response_split = response.split('\n\r')
+            self.messages_raw.extend(response_split[:-2])
+            response, error_id = response_split[-2:]
+        else:
+            response, error_id = response.split('\n\r')
 
-        response = response.split('\n\rerror id=')[0]
         response_entries = response.split('|')
 
         if len(response_entries) > 1:
-            dict_list = [cls.dict_from_list(response_entry.split()) for response_entry in response_entries]
+            dict_list = [self.dict_from_list(response_entry.split()) for response_entry in response_entries]
             return dict_list
 
         response_list = response.split()
-        return cls.dict_from_list(response_list)
+        return self.dict_from_list(response_list)
+
+    @property
+    def messages(self):
+        messages = list()
+
+        for message in self.messages_raw:
+            messages.append(self.dict_from_list(message.split()))
+
+        return messages
 
     @staticmethod
     def dict_from_list(keys_values: list):
