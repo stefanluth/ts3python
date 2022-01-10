@@ -29,9 +29,18 @@ class TS3Bot:
         self.connection.login(login, password)
         self.connection.use(port=port)
         self.client_id = self.whoami()['client_id']
+        self._messages = list()
 
     @property
-    def messages(self) -> list:
+    def all_messages(self) -> list:
+        self._messages.extend(self.new_messages())
+        return self._messages
+
+    @property
+    def unused_messages(self) -> list:
+        return [message for message in self.all_messages if not message.used]
+
+    def new_messages(self):
         return [Message(message) for message in self.connection.messages if message['invokerid'] != self.client_id]
 
     def enable_receive_private_messages(self):

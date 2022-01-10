@@ -12,7 +12,13 @@ WORDPRESS_UPDATE_INTERVAL_SECONDS = 15 * 60
 IDLE_MINUTES_BEFORE_MOVE = 20
 CHECK_AFK_INTERVAL_SECONDS = 10
 MEASUREMENT_INTERVAL_SECONDS = 5
+
 AFK_MOVED_MESSAGE = 'You were moved because of inactivity.'
+
+TRACK_TOGGLE_CMD = '!toggle'
+DO_NOT_TRACK_CONFIRMED_MSG = f'Your connection time is not being tracked anymore. ' \
+                             f'[b]{TRACK_TOGGLE_CMD}[/b] to undo.'
+TRACKING_INFO_MSG = f'Your connection time is being tracked. To opt-out, enter [b]{TRACK_TOGGLE_CMD}[/b].'
 
 CRACKERBARREL_REMINDER_3_DAYS = 'Crackerbarrel meeting in 3 days!'
 CRACKERBARREL_REMINDER_TODAY = 'Crackerbarrel meeting today 8pm!'
