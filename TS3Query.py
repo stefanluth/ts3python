@@ -67,7 +67,9 @@ class TS3Query:
 
     @property
     def messages(self) -> list:
-        return [self.dict_from_list(message.split()) for message in self.messages_raw]
+        messages = [self.dict_from_list(message.split()) for message in self.messages_raw]
+        self.messages_raw = list()
+        return messages
 
     @staticmethod
     def dict_from_list(keys_values: list) -> dict:
