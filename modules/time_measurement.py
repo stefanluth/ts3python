@@ -19,11 +19,8 @@ def start_time_measurement(bot: TS3Bot, database: SQLiteDB, interval: int):
             if client.b64_uid in messaged_clients:
                 continue
 
-            if database.get_do_not_track(client):
-                bot.send_private_message(client_id=client.id, msg=DO_NOT_TRACK_CONFIRMED_MSG)
-            else:
-                bot.send_private_message(client_id=client.id, msg=TRACKING_INFO_MSG)
-
+            do_not_track = database.get_do_not_track(client)
+            inform_client(bot, client, do_not_track)
             messaged_clients.append(client.b64_uid)
 
         for message in bot.unused_messages:
@@ -33,12 +30,9 @@ def start_time_measurement(bot: TS3Bot, database: SQLiteDB, interval: int):
                     if client.id != message.invoker_id:
                         continue
 
-                    toggled_on = database.toggle_do_not_track(client)
+                    do_not_track = database.toggle_do_not_track(client)
+                    inform_client(bot, client, do_not_track)
 
-                    if toggled_on:
-                        bot.send_private_message(client_id=client.id, msg=DO_NOT_TRACK_CONFIRMED_MSG)
-                    else:
-                        bot.send_private_message(client_id=client.id, msg=TRACKING_INFO_MSG)
                     break
 
         time.sleep(interval)
@@ -65,3 +59,10 @@ def start_time_measurement(bot: TS3Bot, database: SQLiteDB, interval: int):
                 client_afk = client_profile['connected_afk']
                 new_afk = round(client_afk + time_difference, 2)
                 database.update_profile_afk(client, new_afk)
+
+
+def inform_client(bot, client, do_not_track):
+    if do_not_track:
+        bot.send_private_message(client_id=client.id, msg=DO_NOT_TRACK_CONFIRMED_MSG)
+    else:
+        bot.send_private_message(client_id=client.id, msg=TRACKING_INFO_MSG)
