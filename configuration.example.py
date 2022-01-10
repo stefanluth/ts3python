@@ -17,8 +17,8 @@ AFK_MOVED_MESSAGE = 'You were moved because of inactivity.'
 
 TRACK_TOGGLE_CMD = '!toggle'
 DO_NOT_TRACK_CONFIRMED_MSG = f'Your connection time is not being tracked anymore. ' \
-                             f'{TRACK_TOGGLE_CMD} to undo.'
-TRACKING_INFO_MSG = f'Your connection time is being tracked. To refuse tracking, enter {TRACK_TOGGLE_CMD}.'
+                             f'[b]{TRACK_TOGGLE_CMD}[/b] to undo.'
+TRACKING_INFO_MSG = f'Your connection time is being tracked. To opt-out, enter [b]{TRACK_TOGGLE_CMD}[/b].'
 
 CRACKERBARREL_REMINDER_3_DAYS = 'Crackerbarrel meeting in 3 days!'
 CRACKERBARREL_REMINDER_TODAY = 'Crackerbarrel meeting today 8pm!'
