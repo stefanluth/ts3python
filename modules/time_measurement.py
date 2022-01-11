@@ -32,20 +32,7 @@ def start_time_measurement(bot: TS3Bot, database: SQLiteDB):
             inform_client(bot, client, do_not_track)
             messaged_clients.append(client.b64_uid)
 
-        for message in bot.unused_messages:
-            if message.content != TRACK_TOGGLE_CMD:
-                continue
-
-            message.mark_as_used()
-
-            for client in clients:
-                if client.id != message.invoker_id:
-                    continue
-
-                do_not_track = database.toggle_do_not_track(client)
-                inform_client(bot, client, do_not_track)
-
-                break
+        check_messages(bot, clients, database)
 
         time.sleep(MEASUREMENT_INTERVAL_SECONDS)
 
@@ -73,6 +60,23 @@ def start_time_measurement(bot: TS3Bot, database: SQLiteDB):
             client_afk = client_profile['connected_afk']
             new_afk = round(client_afk + time_difference, 2)
             database.update_profile_afk(client, new_afk)
+
+
+def check_messages(bot, clients, database):
+    for message in bot.unused_messages:
+        if message.content != TRACK_TOGGLE_CMD:
+            continue
+
+        message.mark_as_used()
+
+        for client in clients:
+            if client.id != message.invoker_id:
+                continue
+
+            do_not_track = database.toggle_do_not_track(client)
+            inform_client(bot, client, do_not_track)
+
+            break
 
 
 def inform_client(bot, client, do_not_track):
