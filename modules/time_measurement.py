@@ -81,8 +81,6 @@ def check_messages(bot, clients, database):
 
 def inform_client(bot, client, do_not_track):
     if do_not_track:
-        # bot.send_private_message(client_id=client.id, msg=DO_NOT_TRACK_CONFIRMED_MSG)
-        pass
+        bot.send_private_message(client_id=client.id, msg=DO_NOT_TRACK_CONFIRMED_MSG)
     else:
-        # bot.send_private_message(client_id=client.id, msg=TRACKING_INFO_MSG)
-        pass
+        bot.send_private_message(client_id=client.id, msg=TRACKING_INFO_MSG)
