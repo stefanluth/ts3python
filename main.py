@@ -1,6 +1,6 @@
 import threading
 
-from configuration import BOT_NAME, PROFILES_DB_NAME, MEASUREMENT_INTERVAL_SECONDS, WORDPRESS_UPDATE_INTERVAL_SECONDS
+from configuration import BOT_NAME, PROFILES_DB_NAME
 from credentials import *
 
 from modules.crackerbarrel_reminder import crackerbarrel_reminder
@@ -34,13 +34,11 @@ def main():
                                                kwargs={
                                                    'bot': bot,
                                                    'database': profile_db,
-                                                   'interval': MEASUREMENT_INTERVAL_SECONDS,
                                                })
     wordpress_update_thread = threading.Thread(target=update_wordpress,
                                                kwargs={
                                                    'profile_db': profile_db,
                                                    'wordpress_db': wordpress_db,
-                                                   'interval': WORDPRESS_UPDATE_INTERVAL_SECONDS,
                                                })
 
     crackerbarrel_reminder_thread.start()
