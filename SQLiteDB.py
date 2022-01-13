@@ -1,5 +1,6 @@
 from datetime import datetime
 import sqlite3
+import threading
 
 from Client import Client
 
@@ -10,64 +11,85 @@ class SQLiteDB:
         self.connection = sqlite3.connect(f'{self.name}.db', check_same_thread=False)
         self.connection.row_factory = sqlite3.Row
         self.cursor = self.connection.cursor()
+        self.lock = threading.Lock()
 
-        with self.connection:
-            try:
-                # This column was added late. This ensures backwards compatibility.
-                self.cursor.execute(f'alter table {self.name} add do_not_track boolean default false;')
-            except sqlite3.OperationalError as error:
-                if str(error) == 'duplicate column name: do_not_track' or str(error) == f'no such table: {self.name}':
-                    pass
-                else:
-                    raise error
+        try:
+            # This column was added late. This ensures backwards compatibility.
+            self.execute(f'alter table {self.name} add do_not_track boolean default false;')
+        except sqlite3.OperationalError as error:
+            if str(error) == 'duplicate column name: do_not_track' or str(error) == f'no such table: {self.name}':
+                pass
+            else:
+                raise error
 
+        try:
+            self.create_table()
+        except sqlite3.OperationalError as error:
+            if str(error) == 'table profiles already exists':
+                pass
+            else:
+                raise error
+
+    def create_table(self):
+        self.execute(f'CREATE TABLE {self.name} ('
+                     f'database_id text,'
+                     f'unique_id text,'
+                     f'b64_uid text,'
+                     f'nickname text,'
+                     f'measurement_start integer,'
+                     f'connected_total real,'
+                     f'connected_afk real,'
+                     f'do_not_track boolean'
+                     f')')
+
+    def execute(self, query):
+        self.lock.acquire()
         with self.connection:
-            try:
-                self.cursor.execute(f'CREATE TABLE {self.name} ('
-                                    f'database_id text,'
-                                    f'unique_id text,'
-                                    f'b64_uid text,'
-                                    f'nickname text,'
-                                    f'measurement_start integer,'
-                                    f'connected_total real,'
-                                    f'connected_afk real,'
-                                    f'do_not_track boolean'
-                                    f')')
-            except sqlite3.OperationalError as error:
-                if str(error) == 'table profiles already exists':
-                    pass
-                else:
-                    raise error
+            self.cursor.execute(query)
+        self.lock.release()
+
+    def fetch_all(self):
+        self.lock.acquire()
+        result = [dict(row) for row in self.cursor.fetchall()]
+        self.lock.release()
+
+        return result
+
+    def fetch_one(self):
+        self.lock.acquire()
+        result = self.cursor.fetchone()[0]
+        self.lock.release()
+
+        return result
 
     def create_profile(self, client: Client):
         if self.get_profile(client) != dict():
             return
 
-        with self.connection:
-            self.cursor.execute(f'INSERT INTO {self.name} VALUES ('
-                                f'"{client.db_id}", '
-                                f'"{client.uid}", '
-                                f'"{client.b64_uid}", '
-                                f'"{client.name}", '
-                                f'{int(datetime.now().timestamp())}, '
-                                f'0.0, '
-                                f'0.0, '
-                                f'false'
-                                f')')
+        self.execute(f'INSERT INTO {self.name} VALUES ('
+                     f'"{client.db_id}", '
+                     f'"{client.uid}", '
+                     f'"{client.b64_uid}", '
+                     f'"{client.name}", '
+                     f'{int(datetime.now().timestamp())}, '
+                     f'0.0, '
+                     f'0.0, '
+                     f'false'
+                     f')')
 
         return self.get_profile(client)
 
     def get_all_profiles(self):
-        self.cursor.execute(f'SELECT * FROM {self.name}')
+        self.execute(f'SELECT * FROM {self.name}')
 
-        return [dict(row) for row in self.cursor.fetchall()]
+        return self.fetch_all()
 
     def get_profile(self, client: Client):
         if client is None:
             return
 
-        self.cursor.execute(f'SELECT * FROM {self.name} '
-                            f'WHERE b64_uid="{client.b64_uid}"')
+        self.execute(f'SELECT * FROM {self.name} '
+                     f'WHERE b64_uid="{client.b64_uid}"')
 
         try:
             return dict(self.cursor.fetchone())
@@ -78,30 +100,29 @@ class SQLiteDB:
         if client is None:
             return
 
-        self.cursor.execute(f'SELECT connected_total '
-                            f'FROM {self.name} '
-                            f'WHERE b64_uid="{client.b64_uid}"')
+        self.execute(f'SELECT connected_total '
+                     f'FROM {self.name} '
+                     f'WHERE b64_uid="{client.b64_uid}"')
 
-        return self.cursor.fetchone()[0]
+        return self.fetch_one()
 
     def get_profile_afk(self, client: Client):
         if client is None:
             return
 
-        self.cursor.execute(f'SELECT connected_afk '
-                            f'FROM {self.name} '
-                            f'WHERE b64_uid="{client.b64_uid}"')
+        self.execute(f'SELECT connected_afk '
+                     f'FROM {self.name} '
+                     f'WHERE b64_uid="{client.b64_uid}"')
 
-        return self.cursor.fetchone()[0]
+        return self.fetch_one()
 
     def update_profile_total(self, client: Client, total: float):
         if client is None:
             return
 
-        with self.connection:
-            self.cursor.execute(f'UPDATE {self.name} '
-                                f'SET connected_total = {total} '
-                                f'WHERE b64_uid="{client.b64_uid}"')
+        self.execute(f'UPDATE {self.name} '
+                     f'SET connected_total = {total} '
+                     f'WHERE b64_uid="{client.b64_uid}"')
 
         return self.get_profile(client)
 
@@ -109,10 +130,9 @@ class SQLiteDB:
         if client is None:
             return
 
-        with self.connection:
-            self.cursor.execute(f'UPDATE {self.name} '
-                                f'SET connected_afk = {afk} '
-                                f'WHERE b64_uid="{client.b64_uid}"')
+        self.execute(f'UPDATE {self.name} '
+                     f'SET connected_afk = {afk} '
+                     f'WHERE b64_uid="{client.b64_uid}"')
 
         return self.get_profile(client)
 
@@ -120,10 +140,9 @@ class SQLiteDB:
         if client is None:
             return
 
-        with self.connection:
-            self.cursor.execute(f'UPDATE {self.name} '
-                                f'SET do_not_track = {do_not_track} '
-                                f'WHERE b64_uid="{client.b64_uid}"')
+        self.execute(f'UPDATE {self.name} '
+                     f'SET do_not_track = {do_not_track} '
+                     f'WHERE b64_uid="{client.b64_uid}"')
 
     def toggle_do_not_track(self, client: Client):
         if client is None:
@@ -138,8 +157,8 @@ class SQLiteDB:
         if client is None:
             return
 
-        self.cursor.execute(f'SELECT do_not_track '
-                            f'FROM {self.name} '
-                            f'WHERE b64_uid="{client.b64_uid}"')
+        self.execute(f'SELECT do_not_track '
+                     f'FROM {self.name} '
+                     f'WHERE b64_uid="{client.b64_uid}"')
 
-        return self.cursor.fetchone()[0]
+        return self.fetch_one()
