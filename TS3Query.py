@@ -2,6 +2,21 @@ import telnetlib
 import threading
 
 
+def dict_from_list(keys_values: list) -> dict:
+    response_dict = dict()
+
+    for key_value_pair in keys_values:
+        key = key_value_pair.split('=')[0]
+        value = key_value_pair[len(key) + 1:]
+
+        try:
+            response_dict[key] = int(value)
+        except ValueError:
+            response_dict[key] = value.strip()
+
+    return response_dict
+
+
 class TS3Query:
     """
     The telnet connection to the server query interface.
@@ -64,31 +79,16 @@ class TS3Query:
         response_list = response.split('|')
 
         if len(response_list) == 1:
-            return self.dict_from_list(response.split())
+            return dict_from_list(response.split())
 
-        return [self.dict_from_list(response.split()) for response in response_list]
+        return [dict_from_list(response.split()) for response in response_list]
 
     @property
     def messages(self) -> list:
-        messages = [self.dict_from_list(message.split()) for message in self.messages_raw]
+        messages = [dict_from_list(message.split()) for message in self.messages_raw]
         self.messages_raw = list()
 
         return messages
-
-    @staticmethod
-    def dict_from_list(keys_values: list) -> dict:
-        response_dict = dict()
-
-        for key_value_pair in keys_values:
-            key = key_value_pair.split('=')[0]
-            value = key_value_pair[len(key)+1:]
-
-            try:
-                response_dict[key] = int(value)
-            except ValueError:
-                response_dict[key] = value.strip()
-
-        return response_dict
 
     def _skip_greeting(self) -> None:
         self.telnet.read_until(b'TS3\n\rWelcome to the TeamSpeak 3 ServerQuery interface, type "help" for a list of '
