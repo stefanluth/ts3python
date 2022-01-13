@@ -24,6 +24,7 @@ class TS3Query:
     def use(self, server_id=0, port=0):
         if port:
             return self.send(f'use port={port}')
+
         return self.send(f'use sid={server_id}')
 
     def logout(self):
@@ -37,20 +38,22 @@ class TS3Query:
         self.quit()
 
     def send(self, command: str):
-        self.lock.acquire()
-        encoded_command: bytes = f'{command.strip()}\n'.encode()
-        self.telnet.write(encoded_command)
-        response = self.receive()
-        self.lock.release()
+        with self.lock:
+            encoded_command: bytes = f'{command.strip()}\n'.encode()
+            self.telnet.write(encoded_command)
+            response = self.receive()
+
         return self.parse_response(response)
 
     def receive(self) -> str:
         _index, error_id_msg, response = self.telnet.expect([br'error id=\d{1,4} msg=.+\n\r'])
+
         return response.decode().strip()
 
     def parse_response(self, response: str):
         if response.startswith('error id='):
             return dict()
+
         if response.startswith('notifytextmessage'):
             response_split = response.split('\n\r')
             self.messages_raw.extend(response_split[:-2])
@@ -69,6 +72,7 @@ class TS3Query:
     def messages(self) -> list:
         messages = [self.dict_from_list(message.split()) for message in self.messages_raw]
         self.messages_raw = list()
+
         return messages
 
     @staticmethod
@@ -78,6 +82,7 @@ class TS3Query:
         for key_value_pair in keys_values:
             key = key_value_pair.split('=')[0]
             value = key_value_pair[len(key)+1:]
+
             try:
                 response_dict[key] = int(value)
             except ValueError:
