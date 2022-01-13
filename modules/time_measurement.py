@@ -4,11 +4,11 @@ import time
 from configuration import TRACK_TOGGLE_CMD, TRACKING_INFO_MSG, DO_NOT_TRACK_CONFIRMED_MSG, \
     MEASUREMENT_EMPTY_INTERVAL_SECONDS, MEASUREMENT_INTERVAL_SECONDS
 
-from SQLiteDB import SQLiteDB
+from ProfilesDB import ProfilesDB
 from TS3Bot import TS3Bot
 
 
-def start_time_measurement(bot: TS3Bot, database: SQLiteDB):
+def start_time_measurement(bot: TS3Bot, database: ProfilesDB):
     messaged_clients = list()
     first_timecheck = round(datetime.datetime.now().timestamp(), 3)
     while 1:
