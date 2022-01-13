@@ -43,22 +43,19 @@ class SQLiteDB:
                      f')')
 
     def execute(self, query):
-        self.lock.acquire()
-        with self.connection:
-            self.cursor.execute(query)
-        self.lock.release()
+        with self.lock:
+            with self.connection:
+                self.cursor.execute(query)
 
     def fetch_all(self):
-        self.lock.acquire()
-        result = [dict(row) for row in self.cursor.fetchall()]
-        self.lock.release()
+        with self.lock:
+            result = [dict(row) for row in self.cursor.fetchall()]
 
         return result
 
     def fetch_one(self):
-        self.lock.acquire()
-        result = self.cursor.fetchone()[0]
-        self.lock.release()
+        with self.lock:
+            result = self.cursor.fetchone()[0]
 
         return result
 
