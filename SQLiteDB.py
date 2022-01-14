@@ -10,7 +10,7 @@ class SQLiteDB:
         self.cursor = self.connection.cursor()
         self.lock = threading.Lock()
 
-    def execute(self, query):
+    def execute(self, query: str):
         with self.lock:
             with self.connection:
                 self.cursor.execute(query)
@@ -23,6 +23,9 @@ class SQLiteDB:
 
     def fetch_one(self):
         with self.lock:
-            result = self.cursor.fetchone()[0]
+            result = self.cursor.fetchone()
 
-        return result
+        if result is None:
+            return result
+
+        return result[0]
