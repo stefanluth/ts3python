@@ -14,9 +14,6 @@ class AccountDB(SQLiteDB):
                 raise error
 
     def update_balance_after_game(self, uid: str, amount: int) -> int:
-        old_balance = self.get_balance(uid)
-        new_balance = old_balance + amount
-
         self._add_games_played(uid)
 
         if amount > 0:
@@ -26,7 +23,7 @@ class AccountDB(SQLiteDB):
             self._add_loss(uid)
             self._check_biggest_loss(uid, amount)
 
-        return self.set_balance(uid, new_balance)
+        return self.update_balance(uid, amount)
 
     def update_balance(self, uid: str, amount: int) -> int:
         old_balance = self.get_balance(uid)
