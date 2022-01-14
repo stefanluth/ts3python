@@ -11,7 +11,7 @@ class ProfilesDB(SQLiteDB):
         try:
             self.create_table()
         except OperationalError as error:
-            if str(error) == 'table profiles already exists':
+            if str(error) == f'table {self.name} already exists':
                 pass
             else:
                 raise error
@@ -29,7 +29,7 @@ class ProfilesDB(SQLiteDB):
                      f')')
 
     def create_profile(self, client: Client):
-        if self.get_profile(client) != dict():
+        if self.get_profile(client) is not None:
             return
 
         self.execute(f'INSERT INTO {self.name} VALUES ('
@@ -57,10 +57,7 @@ class ProfilesDB(SQLiteDB):
         self.execute(f'SELECT * FROM {self.name} '
                      f'WHERE b64_uid="{client.b64_uid}"')
 
-        try:
-            return dict(self.cursor.fetchone())
-        except TypeError:
-            return dict()
+        return self.fetch_one()
 
     def get_profile_total(self, client: Client):
         if client is None:
