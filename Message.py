@@ -7,11 +7,11 @@ msg_types = {
 
 class Message:
     def __init__(self, message: dict):
-        self.invoker_name = message['invokername']
-        self.invoker_id = message['invokerid']
-        self.invoker_unique_id = message['invokeruid']
-        self.type = msg_types[message['targetmode']]
-        self.content = self.parse_content(str(message['msg']))
+        self.invoker_name: str = message['invokername']
+        self.invoker_id: int = message['invokerid']
+        self.invoker_uid: str = message['invokeruid']
+        self.type: str = msg_types[message['targetmode']]
+        self.content: str = self.parse_content(str(message['msg']))
         self.raw = message
         self.used = False
 
