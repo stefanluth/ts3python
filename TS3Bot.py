@@ -8,8 +8,8 @@ def dict_to_parameters(parameters: dict):
     return r'\s'.join([f'{key}={format_string(value)}' for key, value in parameters.items()])
 
 
-def format_string(value: str):
-    return r'\s'.join(value.split())
+def format_string(string: str):
+    return string.replace("\n", r"\n").replace(" ", r"\s").replace("|", r"\p").replace("\t", r"\t")
 
 
 class TS3Bot:
@@ -33,6 +33,7 @@ class TS3Bot:
 
     @property
     def all_messages(self) -> list:
+        self.connection.send('version')
         self._messages.extend(self.new_messages())
         return self._messages
 
