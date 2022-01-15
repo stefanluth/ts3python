@@ -1,7 +1,7 @@
 import time
 
 from configuration import WORDPRESS_UPDATE_INTERVAL_SECONDS
-from SQLiteDB import SQLiteDB
+from ProfilesDB import ProfilesDB
 from HTMLTable import HTMLTable
 from WordpressDB import WordpressDB
 
@@ -12,7 +12,7 @@ def format_time_from_seconds(seconds):
     return f'{hours}:{minutes:02}:{seconds:02}'
 
 
-def update_wordpress(profile_db: SQLiteDB, wordpress_db: WordpressDB):
+def update_wordpress(profile_db: ProfilesDB, wordpress_db: WordpressDB):
     while 1:
         table = HTMLTable(columns=4)
         table.add_header('Rang', 'Name', 'Verbunden', 'Davon aktiv')
