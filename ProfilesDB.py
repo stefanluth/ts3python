@@ -53,7 +53,7 @@ class ProfilesDB(SQLiteDB):
 
         self.execute(f'SELECT * FROM {self.name} WHERE b64_uid="{client.b64_uid}"')
 
-        return self.fetch_one()
+        return self.fetch_one_dict()
 
     def get_profile_total(self, client: Client):
         if client is None:

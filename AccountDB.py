@@ -89,7 +89,7 @@ class AccountDB(SQLiteDB):
     def get_account(self, uid: str):
         self.execute(f'SELECT * FROM {self.name} WHERE uid="{uid}"')
 
-        return self.fetch_one()
+        return self.fetch_one_dict()
 
     def get_all_accounts(self):
         self.execute(f'SELECT * FROM {self.name}')
