@@ -4,7 +4,7 @@ from configuration import ACCOUNT_START_BALANCE
 
 
 class AccountDB(SQLiteDB):
-    def _init__(self, name):
+    def __init__(self, name):
         super().__init__(name)
         try:
             self._create_table()
