@@ -17,31 +17,28 @@ class ProfilesDB(SQLiteDB):
                 raise error
 
     def create_table(self):
-        self.execute(f'CREATE TABLE {self.name} ('
-                     f'database_id text,'
+        self.execute(f'CREATE TABLE {self.name} (database_id text,'
                      f'unique_id text,'
                      f'b64_uid text,'
                      f'nickname text,'
                      f'measurement_start integer,'
                      f'connected_total real,'
                      f'connected_afk real,'
-                     f'do_not_track boolean'
-                     f')')
+                     f'do_not_track boolean)')
 
     def create_profile(self, client: Client):
         if self.get_profile(client) is not None:
             return
 
         self.execute(f'INSERT INTO {self.name} VALUES ('
-                     f'"{client.db_id}", '
-                     f'"{client.uid}", '
-                     f'"{client.b64_uid}", '
-                     f'"{client.name}", '
-                     f'{int(datetime.now().timestamp())}, '
-                     f'0.0, '
-                     f'0.0, '
-                     f'false'
-                     f')')
+                     f'"{client.db_id}",'
+                     f'"{client.uid}",'
+                     f'"{client.b64_uid}",'
+                     f'"{client.name}",'
+                     f'{int(datetime.now().timestamp())},'
+                     f'0.0,'
+                     f'0.0,'
+                     f'false)')
 
         return self.get_profile(client)
 
@@ -54,8 +51,7 @@ class ProfilesDB(SQLiteDB):
         if client is None:
             return
 
-        self.execute(f'SELECT * FROM {self.name} '
-                     f'WHERE b64_uid="{client.b64_uid}"')
+        self.execute(f'SELECT * FROM {self.name} WHERE b64_uid="{client.b64_uid}"')
 
         return self.fetch_one()
 
@@ -63,9 +59,7 @@ class ProfilesDB(SQLiteDB):
         if client is None:
             return
 
-        self.execute(f'SELECT connected_total '
-                     f'FROM {self.name} '
-                     f'WHERE b64_uid="{client.b64_uid}"')
+        self.execute(f'SELECT connected_total FROM {self.name} WHERE b64_uid="{client.b64_uid}"')
 
         return self.fetch_one()
 
@@ -73,9 +67,7 @@ class ProfilesDB(SQLiteDB):
         if client is None:
             return
 
-        self.execute(f'SELECT connected_afk '
-                     f'FROM {self.name} '
-                     f'WHERE b64_uid="{client.b64_uid}"')
+        self.execute(f'SELECT connected_afk FROM {self.name} WHERE b64_uid="{client.b64_uid}"')
 
         return self.fetch_one()
 
@@ -83,9 +75,7 @@ class ProfilesDB(SQLiteDB):
         if client is None:
             return
 
-        self.execute(f'UPDATE {self.name} '
-                     f'SET connected_total = {total} '
-                     f'WHERE b64_uid="{client.b64_uid}"')
+        self.execute(f'UPDATE {self.name} SET connected_total = {total} WHERE b64_uid="{client.b64_uid}"')
 
         return self.get_profile(client)
 
@@ -93,9 +83,7 @@ class ProfilesDB(SQLiteDB):
         if client is None:
             return
 
-        self.execute(f'UPDATE {self.name} '
-                     f'SET connected_afk = {afk} '
-                     f'WHERE b64_uid="{client.b64_uid}"')
+        self.execute(f'UPDATE {self.name} SET connected_afk = {afk} WHERE b64_uid="{client.b64_uid}"')
 
         return self.get_profile(client)
 
@@ -103,9 +91,7 @@ class ProfilesDB(SQLiteDB):
         if client is None:
             return
 
-        self.execute(f'UPDATE {self.name} '
-                     f'SET do_not_track = {do_not_track} '
-                     f'WHERE b64_uid="{client.b64_uid}"')
+        self.execute(f'UPDATE {self.name} SET do_not_track = {do_not_track} WHERE b64_uid="{client.b64_uid}"')
 
     def toggle_do_not_track(self, client: Client):
         if client is None:
@@ -120,8 +106,6 @@ class ProfilesDB(SQLiteDB):
         if client is None:
             return
 
-        self.execute(f'SELECT do_not_track '
-                     f'FROM {self.name} '
-                     f'WHERE b64_uid="{client.b64_uid}"')
+        self.execute(f'SELECT do_not_track FROM {self.name} WHERE b64_uid="{client.b64_uid}"')
 
         return self.fetch_one()
