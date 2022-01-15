@@ -85,6 +85,27 @@ class AccountDB(SQLiteDB):
         if new_biggest_loss:
             self._set_biggest_loss(uid, amount)
 
+    def get_account(self, uid: str):
+        self.execute(f'SELECT * FROM {self.name} '
+                     f'WHERE uid="{uid}"')
+
+        return self.fetch_one()
+
+    def get_all_accounts(self):
+        self.execute(f'SELECT * FROM {self.name}')
+
+        return self.fetch_all()
+
+    def create_account(self, uid: str):
+        if self.get_account(uid) is not None:
+            return
+
+        self.execute(f'INSERT INTO {self.name} VALUES ('
+                     f'"{uid}", '
+                     f'5000, '
+                     f'0, 0, 0, 0, 0, 0, 0, 0'
+                     f')')
+
     def get_balance(self, uid) -> int:
         self.execute(f'SELECT balance FROM {self.name} '
                      f'WHERE uid="{uid}"')
@@ -130,27 +151,6 @@ class AccountDB(SQLiteDB):
         self.execute(f'SELECT biggest_loss FROM {self.name} '
                      f'WHERE uid="{uid}"')
         return self.fetch_one()
-
-    def get_account(self, uid: str):
-        self.execute(f'SELECT * FROM {self.name} '
-                     f'WHERE uid="{uid}"')
-
-        return self.fetch_one()
-
-    def get_all_accounts(self):
-        self.execute(f'SELECT * FROM {self.name}')
-
-        return self.fetch_all()
-
-    def create_account(self, uid: str):
-        if self.get_account(uid) is not None:
-            return
-
-        self.execute(f'INSERT INTO {self.name} VALUES ('
-                     f'"{uid}", '
-                     f'5000, '
-                     f'0, 0, 0, 0, 0, 0, 0, 0'
-                     f')')
 
     def _create_table(self):
         self.execute(f'CREATE TABLE {self.name} ('
