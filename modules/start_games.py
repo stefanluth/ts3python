@@ -2,13 +2,14 @@ import time
 import threading
 
 from configuration import GAME_INVALID_CMD, GAME_INVALID_AMOUNT, GAME_INVALID_GAME, GAME_GREETINGS, \
-    GAME_ABORT_BROKE, GAME_ABORT_BAD_WAGER, ACCOUNT_INFO_BALANCE
+    GAME_ABORT_BROKE, GAME_ABORT_BAD_WAGER, GAME_ABORT_BAD_BET, ACCOUNT_INFO_BALANCE
 from .games.Slots import Slots
+from .games.Roulette import Roulette
 
 from AccountDB import AccountDB
 from TS3Bot import TS3Bot
 
-GAMES = ['slots']
+GAMES = ['slots', 'roulette']
 
 
 def start_games(bot: TS3Bot, database: AccountDB):
@@ -76,6 +77,35 @@ def start_games(bot: TS3Bot, database: AccountDB):
                                                 })
                 slots_thread.start()
                 current_players.append([message.invoker_id, slots_thread])
+                continue
+
+            if game_name == 'roulette':
+                roulette_min_web = Roulette.MIN_WAGER
+                wager_too_low = wager < roulette_min_web
+
+                if wager_too_low:
+                    bot.send_private_message(message.invoker_id, GAME_ABORT_BAD_WAGER.format(roulette_min_web))
+                    continue
+
+                if len(args) != 1:
+                    continue
+
+                bet = args[0]
+                invalid_bet = bet not in Roulette.VALID_BETS
+
+                if invalid_bet:
+                    bot.send_private_message(message.invoker_id, GAME_ABORT_BAD_BET)
+                    continue
+
+                roulette_game = Roulette(wager, bet)
+                database.update_balance_after_game(message.invoker_uid, roulette_game.win_amount)
+                roulette_thread = threading.Thread(target=roulette_game.start_round,
+                                                   kwargs={
+                                                       'bot': bot,
+                                                       'player_id': message.invoker_id,
+                                                   })
+                roulette_thread.start()
+                current_players.append([message.invoker_id, roulette_thread])
                 continue
 
         time.sleep(1)
