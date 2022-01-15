@@ -1,5 +1,6 @@
 from sqlite3 import OperationalError
 from SQLiteDB import SQLiteDB
+from configuration import ACCOUNT_START_BALANCE
 
 
 class AccountDB(SQLiteDB):
@@ -99,7 +100,7 @@ class AccountDB(SQLiteDB):
         if self.get_account(uid) is not None:
             return
 
-        self.execute(f'INSERT INTO {self.name} VALUES ("{uid}", 5000, 0, 0, 0, 0, 0, 0, 0, 0)')
+        self.execute(f'INSERT INTO {self.name} VALUES ("{uid}", {ACCOUNT_START_BALANCE}, 0, 0, 0, 0, 0, 0, 0, 0)')
 
     def get_balance(self, uid) -> int:
         self.execute(f'SELECT balance FROM {self.name} WHERE uid="{uid}"')
