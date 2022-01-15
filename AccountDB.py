@@ -86,8 +86,7 @@ class AccountDB(SQLiteDB):
             self._set_biggest_loss(uid, amount)
 
     def get_account(self, uid: str):
-        self.execute(f'SELECT * FROM {self.name} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'SELECT * FROM {self.name} WHERE uid="{uid}"')
 
         return self.fetch_one()
 
@@ -100,61 +99,46 @@ class AccountDB(SQLiteDB):
         if self.get_account(uid) is not None:
             return
 
-        self.execute(f'INSERT INTO {self.name} VALUES ('
-                     f'"{uid}", '
-                     f'5000, '
-                     f'0, 0, 0, 0, 0, 0, 0, 0'
-                     f')')
+        self.execute(f'INSERT INTO {self.name} VALUES ("{uid}", 5000, 0, 0, 0, 0, 0, 0, 0, 0)')
 
     def get_balance(self, uid) -> int:
-        self.execute(f'SELECT balance FROM {self.name} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'SELECT balance FROM {self.name} WHERE uid="{uid}"')
         return self.fetch_one()
 
     def set_balance(self, uid: str, amount: int) -> int:
-        self.execute(f'UPDATE {self.name} '
-                     f'SET balance = {amount} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'UPDATE {self.name} SET balance = {amount} WHERE uid="{uid}"')
         return self.get_balance(uid)
 
     def get_wins(self, uid: str) -> int:
-        self.execute(f'SELECT wins FROM {self.name} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'SELECT wins FROM {self.name} WHERE uid="{uid}"')
         return self.fetch_one()
 
     def get_losses(self, uid: str) -> int:
-        self.execute(f'SELECT losses FROM {self.name} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'SELECT losses FROM {self.name} WHERE uid="{uid}"')
         return self.fetch_one()
 
     def get_streak(self, uid: str) -> int:
-        self.execute(f'SELECT streak FROM {self.name} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'SELECT streak FROM {self.name} WHERE uid="{uid}"')
         return self.fetch_one()
 
     def get_best_streak(self, uid: str) -> int:
-        self.execute(f'SELECT best_streak FROM {self.name} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'SELECT best_streak FROM {self.name} WHERE uid="{uid}"')
         return self.fetch_one()
 
     def get_worst_streak(self, uid: str) -> int:
-        self.execute(f'SELECT worst_streak FROM {self.name} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'SELECT worst_streak FROM {self.name} WHERE uid="{uid}"')
         return self.fetch_one()
 
     def get_biggest_win(self, uid: str) -> int:
-        self.execute(f'SELECT biggest_win FROM {self.name} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'SELECT biggest_win FROM {self.name} WHERE uid="{uid}"')
         return self.fetch_one()
 
     def get_biggest_loss(self, uid: str) -> int:
-        self.execute(f'SELECT biggest_loss FROM {self.name} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'SELECT biggest_loss FROM {self.name} WHERE uid="{uid}"')
         return self.fetch_one()
 
     def _create_table(self):
-        self.execute(f'CREATE TABLE {self.name} ('
-                     f'uid text,'
+        self.execute(f'CREATE TABLE {self.name} (uid text,'
                      f'balance integer,'
                      f'wins integer,'
                      f'losses integer,'
@@ -163,58 +147,40 @@ class AccountDB(SQLiteDB):
                      f'worst_streak integer,'
                      f'games_played integer,'
                      f'biggest_win integer,'
-                     f'biggest_loss integer'
-                     f')')
+                     f'biggest_loss integer)')
 
     def _set_wins(self, uid: str, wins: int) -> int:
-        self.execute(f'UPDATE {self.name} '
-                     f'SET wins = {wins} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'UPDATE {self.name} SET wins = {wins} WHERE uid="{uid}"')
         return self.get_wins(uid)
 
     def _set_losses(self, uid: str, losses: int) -> int:
-        self.execute(f'UPDATE {self.name} '
-                     f'SET losses = {losses} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'UPDATE {self.name} SET losses = {losses} WHERE uid="{uid}"')
         return self.get_losses(uid)
 
     def _set_streak(self, uid: str, streak: int) -> int:
-        self.execute(f'UPDATE {self.name} '
-                     f'SET streak = {streak} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'UPDATE {self.name} SET streak = {streak} WHERE uid="{uid}"')
         return self.get_streak(uid)
 
     def _set_best_streak(self, uid: str, streak: int) -> int:
-        self.execute(f'UPDATE {self.name} '
-                     f'SET best_streak = {streak} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'UPDATE {self.name} SET best_streak = {streak} WHERE uid="{uid}"')
         return self.get_best_streak(uid)
 
     def _set_worst_streak(self, uid: str, streak: int) -> int:
-        self.execute(f'UPDATE {self.name} '
-                     f'SET worst_streak = {streak} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'UPDATE {self.name} SET worst_streak = {streak} WHERE uid="{uid}"')
         return self.get_worst_streak(uid)
 
     def get_games_played(self, uid: str) -> int:
-        self.execute(f'SELECT games_played FROM {self.name} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'SELECT games_played FROM {self.name} WHERE uid="{uid}"')
         return self.fetch_one()
 
     def _set_games_played(self, uid: str, games: int) -> int:
-        self.execute(f'UPDATE {self.name} '
-                     f'SET games_played = {games} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'UPDATE {self.name} SET games_played = {games} WHERE uid="{uid}"')
         return self.get_games_played(uid)
 
     def _set_biggest_win(self, uid: str, amount: int) -> int:
-        self.execute(f'UPDATE {self.name} '
-                     f'SET biggest_win = {amount} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'UPDATE {self.name} SET biggest_win = {amount} WHERE uid="{uid}"')
         return self.get_biggest_win(uid)
 
     def _set_biggest_loss(self, uid: str, amount: int) -> int:
-        self.execute(f'UPDATE {self.name} '
-                     f'SET biggest_loss = {amount} '
-                     f'WHERE uid="{uid}"')
+        self.execute(f'UPDATE {self.name} SET biggest_loss = {amount} WHERE uid="{uid}"')
         return self.get_biggest_loss(uid)
