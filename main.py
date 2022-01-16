@@ -1,6 +1,6 @@
 import threading
 
-from configuration import BOT_NAME, ACCOUNTS_DB_NAME, PROFILES_DB_NAME
+from configuration import BOT_NAME, BOT_DESC, ACCOUNTS_DB_NAME, PROFILES_DB_NAME
 from credentials import *
 
 from modules.crackerbarrel_reminder import crackerbarrel_reminder
@@ -24,6 +24,7 @@ def main():
                  telnet_port=TELNET_PORT)
 
     bot.set_bot_name(BOT_NAME)
+    bot.set_bot_description(BOT_DESC)
     bot.enable_receive_all_messages()
 
     accounts_db = AccountDB(ACCOUNTS_DB_NAME)
