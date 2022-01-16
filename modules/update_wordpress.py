@@ -36,5 +36,6 @@ def update_wordpress(profile_db: ProfilesDB, wordpress_db: WordpressDB):
             )
 
         table_html = table.generate()
+        table_html += '<a href=https://github.com/stefanluth/ts3python>Source Code</a>'
         wordpress_db.update_post_content(table_html)
         time.sleep(WORDPRESS_UPDATE_INTERVAL_SECONDS)
