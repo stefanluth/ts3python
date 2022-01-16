@@ -7,9 +7,7 @@ def bb_b(text: str):
 
 
 def get_color(amount: int):
-    if amount < 500:
-        return 'brown'
-    elif amount < 1000:
+    if amount < 1000:
         return 'darkorange'
     elif amount < 3000:
         return 'forestgreen'
