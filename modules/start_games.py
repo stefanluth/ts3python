@@ -39,19 +39,8 @@ def start_games(bot: TS3Bot, database: AccountDB):
                 database.create_account(message.invoker_uid)
 
             try:
-                command, game_name, wager, *args = message.content.split()
-            except ValueError:
-                bot.send_private_message(message.invoker_id, GAME_INVALID_CMD)
-                continue
-
-            if game_name.lower() not in GAMES:
-                bot.send_private_message(message.invoker_id, GAME_INVALID_GAME)
-                continue
-
-            try:
-                wager = int(wager)
-            except ValueError:
-                bot.send_private_message(message.invoker_id, GAME_INVALID_AMOUNT)
+                game, wager, args = parse_command(bot, message)
+            except TypeError:
                 continue
 
             player_is_broke = wager > database.get_balance(message.invoker_uid)
@@ -62,10 +51,30 @@ def start_games(bot: TS3Bot, database: AccountDB):
 
             bot.send_private_message(message.invoker_id, GAME_GREETINGS.format(message.invoker_name))
 
-            player_id, player_thread = choose_game(bot, database, game_name, wager, message, args)
+            player_id, player_thread = choose_game(bot, database, game, wager, message, args)
             current_games.append([player_id, player_thread])
 
         time.sleep(1)
+
+
+def parse_command(bot: TS3Bot, message: Message):
+    try:
+        command, game_name, wager, *args = message.content.split()
+    except ValueError:
+        bot.send_private_message(message.invoker_id, GAME_INVALID_CMD)
+        return
+
+    if game_name.lower() not in GAMES:
+        bot.send_private_message(message.invoker_id, GAME_INVALID_GAME)
+        return
+
+    try:
+        wager = int(wager)
+    except ValueError:
+        bot.send_private_message(message.invoker_id, GAME_INVALID_AMOUNT)
+        return
+
+    return game_name, wager, args
 
 
 def choose_game(bot: TS3Bot, database: AccountDB, game: str, wager: int, message: Message, args: list):
