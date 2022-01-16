@@ -48,64 +48,40 @@ class ProfilesDB(SQLiteDB):
         return self.fetch_all()
 
     def get_profile(self, client: Client):
-        if client is None:
-            return
-
         self.execute(f'SELECT * FROM {self.name} WHERE b64_uid="{client.b64_uid}"')
 
         return self.fetch_one_dict()
 
     def get_profile_total(self, client: Client):
-        if client is None:
-            return
-
         self.execute(f'SELECT connected_total FROM {self.name} WHERE b64_uid="{client.b64_uid}"')
 
         return self.fetch_one()
 
     def get_profile_afk(self, client: Client):
-        if client is None:
-            return
-
         self.execute(f'SELECT connected_afk FROM {self.name} WHERE b64_uid="{client.b64_uid}"')
 
         return self.fetch_one()
 
     def update_profile_total(self, client: Client, total: float):
-        if client is None:
-            return
-
         self.execute(f'UPDATE {self.name} SET connected_total = {total} WHERE b64_uid="{client.b64_uid}"')
 
         return self.get_profile(client)
 
     def update_profile_afk(self, client: Client, afk: float):
-        if client is None:
-            return
-
         self.execute(f'UPDATE {self.name} SET connected_afk = {afk} WHERE b64_uid="{client.b64_uid}"')
 
         return self.get_profile(client)
 
-    def set_do_not_track(self, client: Client, do_not_track: bool):
-        if client is None:
-            return
+    def set_do_not_track(self, uid: str, do_not_track: bool):
+        self.execute(f'UPDATE {self.name} SET do_not_track = {do_not_track} WHERE unique_id="{uid}"')
 
-        self.execute(f'UPDATE {self.name} SET do_not_track = {do_not_track} WHERE b64_uid="{client.b64_uid}"')
-
-    def toggle_do_not_track(self, client: Client):
-        if client is None:
-            return
-
-        toggled = not self.get_do_not_track(client)
-        self.set_do_not_track(client, toggled)
+    def toggle_do_not_track(self, uid: str):
+        toggled = not self.get_do_not_track(uid)
+        self.set_do_not_track(uid, toggled)
 
         return toggled
 
-    def get_do_not_track(self, client: Client):
-        if client is None:
-            return
-
-        self.execute(f'SELECT do_not_track FROM {self.name} WHERE b64_uid="{client.b64_uid}"')
+    def get_do_not_track(self, uid: str):
+        self.execute(f'SELECT do_not_track FROM {self.name} WHERE unique_id="{uid}"')
 
         return self.fetch_one()
