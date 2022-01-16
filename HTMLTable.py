@@ -16,9 +16,17 @@ class HTMLTable:
     def add_row(self, *cells):
         if len(cells) != self.columns:
             return
-        self.rows.append('<tr>')
+        if len(self.rows) % 2 == 0:
+            self.rows.append('<tr class="table-row-even">')
+        else:
+            self.rows.append('<tr class="table-row-odd">')
+
         for cell in cells:
-            self.rows.append(f'<td>{cell}</td>')
+            try:
+                int(cell)
+                self.rows.append(f'<td class="data-number">{cell}</td>')
+            except ValueError:
+                self.rows.append(f'<td class="data-text">{cell}</td>')
         self.rows.append('</tr>')
 
     def generate(self):
