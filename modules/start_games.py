@@ -21,6 +21,7 @@ def start_games(bot: TS3Bot, database: AccountDB):
             already_playing = message.invoker_id in [_id for _id, _thread in current_games]
 
             if already_playing:
+                message.mark_as_used()
                 continue
 
             if message.content.startswith('!balance'):
