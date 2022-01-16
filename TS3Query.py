@@ -61,7 +61,7 @@ class TS3Query:
         return self.parse_response(response)
 
     def receive(self) -> str:
-        _index, error_id_msg, response = self.telnet.expect([br'error id=\d{1,4} msg=.+\n\r'])
+        _index, _error_id_msg, response = self.telnet.expect([br'error id=\d{1,4} msg=.+\n\r'])
 
         return response.decode().strip()
 
