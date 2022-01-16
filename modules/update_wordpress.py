@@ -21,11 +21,16 @@ def update_wordpress(profile_db: ProfilesDB, wordpress_db: WordpressDB):
                                  key=lambda column: column['connected_total']-column['connected_afk'],
                                  reverse=True)
 
-        for rank, profile in enumerate(sorted_profiles):
-            table.add_row(rank+1,
+        rank = 1
+        for profile in sorted_profiles:
+            if profile['do_not_track']:
+                continue
+
+            table.add_row(rank,
                           profile['nickname'],
                           format_time_from_seconds(profile['connected_total']),
                           format_time_from_seconds(profile['connected_total']-profile['connected_afk']))
+            rank += 1
 
         table_html = table.generate()
         wordpress_db.update_post_content(table_html)
