@@ -16,18 +16,23 @@ class HTMLTable:
     def add_row(self, *cells):
         if len(cells) != self.columns:
             return
-        if len(self.rows) % 2 == 0:
-            self.rows.append('<tr class="table-row-even">')
+
+        row = str()
+
+        if len(self.rows) % 2 != 0:
+            row += '<tr class="table-row-even">'
         else:
-            self.rows.append('<tr class="table-row-odd">')
+            row += '<tr class="table-row-odd">'
 
         for cell in cells:
             try:
                 int(cell)
-                self.rows.append(f'<td class="data-number">{cell}</td>')
+                row += f'<td class="data-number">{cell}</td>'
             except ValueError:
-                self.rows.append(f'<td class="data-text">{cell}</td>')
-        self.rows.append('</tr>')
+                row += f'<td class="data-text">{cell}</td>'
+
+        row += '</tr>'
+        self.rows.append(row)
 
     def generate(self):
         html = '<figure class="wp-block-table tg is-style-stripes"><table>'
