@@ -28,11 +28,11 @@ def start_time_measurement(bot: TS3Bot, database: ProfilesDB):
             if client.b64_uid in messaged_clients:
                 continue
 
-            do_not_track = database.get_do_not_track(client)
-            inform_client(bot, client, do_not_track)
+            do_not_track = database.get_do_not_track(client.uid)
+            inform_client(bot, client.id, do_not_track)
             messaged_clients.append(client.b64_uid)
 
-        check_messages(bot, clients, database)
+        check_toggle_messages(bot, database)
 
         time.sleep(MEASUREMENT_INTERVAL_SECONDS)
 
@@ -41,7 +41,9 @@ def start_time_measurement(bot: TS3Bot, database: ProfilesDB):
         first_timecheck = second_timecheck
 
         for client in bot.create_client_list():
-            if client.b64_uid not in clients_b64:
+            is_new_client = client.b64_uid not in clients_b64
+
+            if is_new_client:
                 continue
 
             client_profile = database.get_profile(client)
@@ -62,27 +64,21 @@ def start_time_measurement(bot: TS3Bot, database: ProfilesDB):
             database.update_profile_afk(client, new_afk)
 
 
-def check_messages(bot, clients, database):
+def check_toggle_messages(bot, database):
     for message in bot.unused_messages:
         if message.content != TRACK_TOGGLE_CMD:
             continue
 
         message.mark_as_used()
 
-        for client in clients:
-            if client.id != message.invoker_id:
-                continue
-
-            do_not_track = database.toggle_do_not_track(client)
-            inform_client(bot, client, do_not_track)
-
-            break
+        do_not_track = database.toggle_do_not_track(message.invoker_uid)
+        inform_client(bot, message.invoker_id, do_not_track)
 
 
-def inform_client(bot, client, do_not_track):
+def inform_client(bot, client_id: int, do_not_track: bool):
     if do_not_track:
         msg = DO_NOT_TRACK_CONFIRMED_MSG
     else:
         msg = TRACKING_INFO_MSG
 
-    bot.send_private_message(client_id=client.id, msg=msg)
+    bot.send_private_message(client_id, msg=msg)
