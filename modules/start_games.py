@@ -70,11 +70,11 @@ def start_games(bot: TS3Bot, database: AccountDB):
 
 def choose_game(bot: TS3Bot, database: AccountDB, game: str, wager: int, message: Message, args: list):
     if game == 'slots':
-        roulette_min_web = Slots.MIN_WAGER
-        wager_too_low = wager < roulette_min_web
+        win_wager = Slots.MIN_WAGER
+        wager_too_low = wager < win_wager
 
         if wager_too_low:
-            bot.send_private_message(message.invoker_id, GAME_ABORT_BAD_WAGER.format(roulette_min_web))
+            bot.send_private_message(message.invoker_id, GAME_ABORT_BAD_WAGER.format(win_wager))
             return [message.invoker_id, threading.Thread()]
 
         slots_game = Slots(wager)
@@ -88,11 +88,11 @@ def choose_game(bot: TS3Bot, database: AccountDB, game: str, wager: int, message
         return [message.invoker_id, slots_thread]
 
     if game == 'roulette':
-        roulette_min_web = Roulette.MIN_WAGER
-        wager_too_low = wager < roulette_min_web
+        win_wager = Roulette.MIN_WAGER
+        wager_too_low = wager < win_wager
 
         if wager_too_low:
-            bot.send_private_message(message.invoker_id, GAME_ABORT_BAD_WAGER.format(roulette_min_web))
+            bot.send_private_message(message.invoker_id, GAME_ABORT_BAD_WAGER.format(win_wager))
             return [message.invoker_id, threading.Thread()]
 
         if len(args) != 1:
