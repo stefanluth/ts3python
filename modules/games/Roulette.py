@@ -42,7 +42,10 @@ BETS = {
     'doz3': {'name': '3rd Dozen',
              'numbers': [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36],
              'ratio': 3},
-    'basket': {'name': 'the Basket',
+    'snake': {'name': 'Snake',
+              'numbers': [1, 5, 9, 12, 14, 16, 19, 23, 27, 30, 32, 34],
+              'ratio': 3},
+    'basket': {'name': 'Basket',
                'numbers': [0, 1, 2, 3],
                'ratio': 9},
 }
@@ -56,7 +59,7 @@ class Roulette:
         self.wager = wager
 
         try:
-            numbers_bet_on = int(bet)
+            numbers_bet_on = [int(bet)]
             win_ratio = 36
             self.bet = bet
         except ValueError:
