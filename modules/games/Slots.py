@@ -1,10 +1,8 @@
 import random
 import time
 
-from configuration import GAME_WON_MSG, GAME_LOST_MSG, \
-    SLOTS_MIN_WAGER, SLOTS_START_MSG, SLOTS_RESULT_MSG
-from .formatting import get_color
-
+from configuration import GAME_WON_MSG, GAME_LOST_MSG, SLOTS_MIN_WAGER, SLOTS_START_MSG, SLOTS_RESULT_MSG
+from modules.games.formatting import get_color
 from TS3Bot import TS3Bot
 
 

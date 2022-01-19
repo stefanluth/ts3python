@@ -1,9 +1,9 @@
 import random
 import time
 
-from TS3Bot import TS3Bot
 from configuration import ROULETTE_MIN_WAGER, ROULETTE_START_MSG, ROULETTE_RESULT_MSG, GAME_LOST_MSG, GAME_WON_MSG
-from .formatting import get_color
+from modules.games.formatting import get_color
+from TS3Bot import TS3Bot
 
 BETS = {
     'low': {'name': 'Low',

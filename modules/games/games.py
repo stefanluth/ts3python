@@ -1,19 +1,20 @@
 import time
 import threading
 
-from Message import Message
-from configuration import GAME_INVALID_CMD, GAME_INVALID_AMOUNT, GAME_INVALID_GAME, GAME_GREETINGS, \
+from configuration import GAME_GREETINGS, GAME_INVALID_CMD, GAME_INVALID_AMOUNT, GAME_INVALID_GAME, \
     GAME_ABORT_BROKE, GAME_ABORT_BAD_WAGER, GAME_ABORT_BAD_BET, ACCOUNT_INFO_BALANCE
-from .games.Slots import Slots
-from .games.Roulette import Roulette
 
-from AccountDB import AccountDB
+from modules.games.Slots import Slots
+from modules.games.Roulette import Roulette
+from modules.games.AccountDB import AccountDB
+
+from Message import Message
 from TS3Bot import TS3Bot
 
 GAMES = ['slots', 'roulette']
 
 
-def start_games(bot: TS3Bot, database: AccountDB):
+def start(bot: TS3Bot, database: AccountDB):
     current_games = list()
     while 1:
         for message in bot.unused_messages:
