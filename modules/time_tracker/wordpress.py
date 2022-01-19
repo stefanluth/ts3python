@@ -7,12 +7,6 @@ from modules.time_tracker.ProfilesDB import ProfilesDB
 from modules.time_tracker.WordpressDB import WordpressDB
 
 
-def __format_time_from_seconds(seconds):
-    minutes, seconds = divmod(int(seconds), 60)
-    hours, minutes = divmod(minutes, 60)
-    return f'{hours}:{minutes:02}:{seconds:02}'
-
-
 def update(profile_db: ProfilesDB, wordpress_db: WordpressDB):
     while 1:
         table = HTMLTable(columns=5)
@@ -40,3 +34,9 @@ def update(profile_db: ProfilesDB, wordpress_db: WordpressDB):
         table_html += '<a href=https://github.com/stefanluth/ts3python>Source Code</a>'
         wordpress_db.update_post_content(table_html)
         time.sleep(WORDPRESS_UPDATE_INTERVAL_SECONDS)
+
+
+def __format_time_from_seconds(seconds):
+    minutes, seconds = divmod(int(seconds), 60)
+    hours, minutes = divmod(minutes, 60)
+    return f'{hours}:{minutes:02}:{seconds:02}'

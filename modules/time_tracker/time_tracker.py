@@ -8,7 +8,6 @@ from modules.time_tracker.ProfilesDB import ProfilesDB
 from TS3Bot import TS3Bot
 
 
-
 def start(bot: TS3Bot, database: ProfilesDB):
     messaged_clients = list()
     first_timecheck = round(datetime.datetime.now().timestamp(), 3)
