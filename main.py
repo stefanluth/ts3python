@@ -7,7 +7,7 @@ from modules.crackerbarrel_reminder import crackerbarrel_reminder
 from modules.holiday_doodle import set_holiday_doodle
 from modules.move_afk import move_afk
 from modules.start_games import start_games
-from modules.time_measurement import start_time_measurement
+from modules.time_tracker import start_time_tracker
 from modules.update_wordpress import update_wordpress
 
 from AccountDB import AccountDB
@@ -41,7 +41,7 @@ def main():
                                         'database': accounts_db,
                                     })
 
-    time_measurement_thread = threading.Thread(target=start_time_measurement,
+    time_measurement_thread = threading.Thread(target=start_time_tracker,
                                                kwargs={
                                                    'bot': bot,
                                                    'database': profile_db,

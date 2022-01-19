@@ -8,7 +8,7 @@ from ProfilesDB import ProfilesDB
 from TS3Bot import TS3Bot
 
 
-def start_time_measurement(bot: TS3Bot, database: ProfilesDB):
+def start_time_tracker(bot: TS3Bot, database: ProfilesDB):
     messaged_clients = list()
     first_timecheck = round(datetime.datetime.now().timestamp(), 3)
     while 1:
