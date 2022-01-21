@@ -4,11 +4,11 @@ import time
 from configuration import TRACK_TOGGLE_CMD, TRACKING_INFO_MSG, DO_NOT_TRACK_CONFIRMED_MSG, \
     MEASUREMENT_EMPTY_INTERVAL_SECONDS, MEASUREMENT_INTERVAL_SECONDS
 
-from ProfilesDB import ProfilesDB
+from modules.time_tracker.ProfilesDB import ProfilesDB
 from TS3Bot import TS3Bot
 
 
-def start_time_measurement(bot: TS3Bot, database: ProfilesDB):
+def start(bot: TS3Bot, database: ProfilesDB):
     messaged_clients = list()
     first_timecheck = round(datetime.datetime.now().timestamp(), 3)
     while 1:
@@ -29,10 +29,10 @@ def start_time_measurement(bot: TS3Bot, database: ProfilesDB):
                 continue
 
             do_not_track = database.get_do_not_track(client.uid)
-            inform_client(bot, client.id, do_not_track)
+            __inform_client(bot, client.id, do_not_track)
             messaged_clients.append(client.b64_uid)
 
-        check_toggle_messages(bot, database)
+        __check_toggle_messages(bot, database)
 
         time.sleep(MEASUREMENT_INTERVAL_SECONDS)
 
@@ -64,7 +64,7 @@ def start_time_measurement(bot: TS3Bot, database: ProfilesDB):
             database.update_profile_afk(client, new_afk)
 
 
-def check_toggle_messages(bot, database):
+def __check_toggle_messages(bot, database):
     for message in bot.unused_messages:
         if message.content != TRACK_TOGGLE_CMD:
             continue
@@ -72,10 +72,10 @@ def check_toggle_messages(bot, database):
         message.mark_as_used()
 
         do_not_track = database.toggle_do_not_track(message.invoker_uid)
-        inform_client(bot, message.invoker_id, do_not_track)
+        __inform_client(bot, message.invoker_id, do_not_track)
 
 
-def inform_client(bot, client_id: int, do_not_track: bool):
+def __inform_client(bot, client_id: int, do_not_track: bool):
     if do_not_track:
         msg = DO_NOT_TRACK_CONFIRMED_MSG
     else:
