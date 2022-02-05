@@ -1,4 +1,3 @@
-import datetime
 import time
 
 from configuration import TRACK_TOGGLE_CMD, TRACKING_INFO_MSG, DO_NOT_TRACK_CONFIRMED_MSG, \
@@ -10,7 +9,7 @@ from TS3Bot import TS3Bot
 
 def start(bot: TS3Bot, database: ProfilesDB):
     messaged_clients = list()
-    first_timecheck = round(datetime.datetime.now().timestamp(), 3)
+    first_timecheck = round(time.time().timestamp(), 3)
     while 1:
         clients = bot.create_client_list()
 
@@ -36,7 +35,7 @@ def start(bot: TS3Bot, database: ProfilesDB):
 
         time.sleep(MEASUREMENT_INTERVAL_SECONDS)
 
-        second_timecheck = round(datetime.datetime.now().timestamp(), 3)
+        second_timecheck = round(time.time(), 3)
         time_difference = round(second_timecheck - first_timecheck, 2)
         first_timecheck = second_timecheck
 
