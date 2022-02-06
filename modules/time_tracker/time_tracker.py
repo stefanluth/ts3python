@@ -9,7 +9,7 @@ from TS3Bot import TS3Bot
 
 def start(bot: TS3Bot, database: ProfilesDB):
     messaged_clients = list()
-    first_timecheck = round(time.time().timestamp(), 3)
+    first_timecheck = round(time.time(), 3)
     while 1:
         clients = bot.create_client_list()
 

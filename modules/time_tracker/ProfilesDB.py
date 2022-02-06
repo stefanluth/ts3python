@@ -1,4 +1,3 @@
-from datetime import datetime
 from sqlite3 import OperationalError
 import time
 
