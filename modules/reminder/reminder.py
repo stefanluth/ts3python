@@ -1,8 +1,8 @@
 import calendar
 import datetime
 
-from TS3Bot import TS3Bot
-from configuration import CRACKERBARREL_REMINDER_3_DAYS, CRACKERBARREL_REMINDER_TODAY
+from ts3bot import TS3Bot
+from .configuration import REMINDER_3_DAYS_MSG, REMINDER_TODAY_MSG
 
 days = {
     'Monday': 0,
@@ -15,17 +15,17 @@ days = {
 }
 
 
-def crackerbarrel_reminder(bot: TS3Bot):
+def check_crackerbarrel_reminder(bot: TS3Bot):
     today = datetime.datetime.today()
     wednesday = days['Wednesday']
     last_wednesday = last_weekday_of_month(wednesday, today.year, today.month)
 
     if today.day == last_wednesday:
         bot.set_host_message_mode(2)
-        return bot.set_new_host_message(CRACKERBARREL_REMINDER_TODAY)
+        return bot.set_new_host_message(REMINDER_TODAY_MSG)
     elif today.day == last_wednesday - 3:
         bot.set_host_message_mode(2)
-        return bot.set_new_host_message(CRACKERBARREL_REMINDER_3_DAYS)
+        return bot.set_new_host_message(REMINDER_3_DAYS_MSG)
     elif today.day == last_wednesday + 1:
         return bot.reset_host_message()
 

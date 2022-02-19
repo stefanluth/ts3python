@@ -1,15 +1,15 @@
 import time
 import threading
 
-from configuration import GAME_GREETINGS, GAME_INVALID_CMD, GAME_INVALID_AMOUNT, GAME_INVALID_GAME, \
+from .configuration import GAME_GREETINGS, GAME_INVALID_CMD, GAME_INVALID_AMOUNT, GAME_INVALID_GAME, \
     GAME_ABORT_BROKE, GAME_ABORT_BAD_WAGER, GAME_ABORT_BAD_BET, ACCOUNT_INFO_BALANCE
 
-from modules.games.Slots import Slots
-from modules.games.Roulette import Roulette
-from modules.games.AccountDB import AccountDB
+from modules.games.slots import Slots
+from modules.games.roulette import Roulette
+from modules.games.accounts_db import AccountDB
 
-from Message import Message
-from TS3Bot import TS3Bot
+from message import Message
+from ts3bot import TS3Bot
 
 GAMES = ['slots', 'roulette']
 

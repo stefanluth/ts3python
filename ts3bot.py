@@ -1,7 +1,7 @@
-from Client import Client
-from Channel import Channel
-from Message import Message
-from TS3Query import TS3Query
+from client import Client
+from channel import Channel
+from message import Message
+from ts3query import TS3Query
 
 
 def dict_to_parameters(parameters: dict):
@@ -16,16 +16,15 @@ class TS3Bot:
     """
     An interface to send commands to the server.
     """
-    def __init__(self, ip, port, login, password, telnet_port):
+    def __init__(self, query: TS3Query, port: int, login: str, password: str):
         """
         A bot connected to a TeamSpeak 3 Server via Telnet.
-        :param ip: TS3 server IP address.
+        :param query: A connected TS3Query.
         :param port: TS3 server port.
         :param login: TS3 query login name.
         :param password: TS3 query login password.
-        :param telnet_port: TS3 telnet port.
         """
-        self.connection = TS3Query(ip, telnet_port)
+        self.connection = query
         self.connection.login(login, password)
         self.connection.use(port=port)
         self.client_id = self.whoami()['client_id']

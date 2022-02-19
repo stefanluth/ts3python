@@ -1,6 +1,6 @@
 import time
-from TS3Bot import TS3Bot
-from configuration import BUSY_CHANNEL, CHECK_AFK_INTERVAL_SECONDS, AFK_MOVED_MESSAGE
+from ts3bot import TS3Bot
+from .configuration import BUSY_CHANNEL, CHECK_AFK_INTERVAL_SECONDS, AFK_MOVED_MESSAGE
 
 
 def move_afk(bot: TS3Bot):

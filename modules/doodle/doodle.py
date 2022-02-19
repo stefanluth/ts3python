@@ -1,7 +1,7 @@
 import datetime
 
-from TS3Bot import TS3Bot
-from configuration import BANNERS
+from ts3bot import TS3Bot
+from .configuration import BANNERS
 
 
 def set_holiday_doodle(bot: TS3Bot):
@@ -12,7 +12,7 @@ def set_holiday_doodle(bot: TS3Bot):
         return bot.change_host_banner_image(BANNERS['april fools'])
     elif today.month == 5 and 7 <= today.day <= 15 and today.weekday() == 6:
         return bot.change_host_banner_image(BANNERS['mothers day'])
-    elif today.month == 10 and 24 <= today.day <= 31:
+    elif today.month == 10 and 27 <= today.day <= 31:
         return bot.change_host_banner_image(BANNERS['halloween'])
     elif today.month == 12 and 1 <= today.day <= 26:
         return bot.change_host_banner_image(BANNERS['christmas'])

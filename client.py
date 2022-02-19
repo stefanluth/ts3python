@@ -1,4 +1,4 @@
-from configuration import IDLE_MINUTES_BEFORE_MOVE, AFK_CHANNELS
+from configuration import IDLE_MINUTES_BEFORE_AFK, AFK_CHANNELS
 
 
 class Client:
@@ -25,10 +25,10 @@ class Client:
 
         idle_minutes = self.idle_time / 60
 
-        if idle_minutes > IDLE_MINUTES_BEFORE_MOVE or self.is_away:
+        if idle_minutes > IDLE_MINUTES_BEFORE_AFK or self.is_away:
             return True
 
-        return self.is_muted and idle_minutes > IDLE_MINUTES_BEFORE_MOVE / 2
+        return self.is_muted and idle_minutes > IDLE_MINUTES_BEFORE_AFK / 2
 
     @property
     def is_muted(self):
