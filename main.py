@@ -3,8 +3,8 @@ import threading
 from configuration import BOT_NAME, BOT_DESC
 from credentials import *
 
-from modules.reminder.reminder import crackerbarrel_reminder
-from modules.doodle.doodle import set_holiday_doodle
+from modules.reminder import reminder
+from modules.doodle import doodle
 from modules.afk_mover import afk_mover
 
 from modules.games import games, AccountDB
@@ -31,8 +31,8 @@ def main():
     profile_db = ProfilesDB(PROFILES_DB_NAME)
     wordpress_db = WordpressDB(MYSQL_HOST, MYSQL_DB_NAME, MYSQL_USER, MYSQL_PW, 'stats')
 
-    crackerbarrel_reminder_thread = threading.Thread(target=crackerbarrel_reminder, kwargs={'bot': bot})
-    holiday_doodle_thread = threading.Thread(target=set_holiday_doodle, kwargs={'bot': bot})
+    crackerbarrel_reminder_thread = threading.Thread(target=reminder.crackerbarrel_reminder, kwargs={'bot': bot})
+    holiday_doodle_thread = threading.Thread(target=doodle.set_holiday_doodle, kwargs={'bot': bot})
     move_afk_thread = threading.Thread(target=afk_mover.move_afk, kwargs={'bot': bot})
 
     games_thread = threading.Thread(target=games.start,
