@@ -14,14 +14,15 @@ from modules.time_tracker import time_tracker, wordpress, ProfilesDB, WordpressD
 from modules.time_tracker.configuration import PROFILES_DB_NAME
 
 from ts3bot import TS3Bot
+from ts3query import TS3Query
 
 
 def main():
-    bot = TS3Bot(ip=SERVER_IP,
+    query = TS3Query(ip=SERVER_IP, port=TELNET_PORT)
+    bot = TS3Bot(query=query,
                  port=SERVER_PORT,
                  login=TELNET_LOGIN,
-                 password=TELNET_PW,
-                 telnet_port=TELNET_PORT)
+                 password=TELNET_PW)
 
     bot.set_bot_name(BOT_NAME)
     bot.set_bot_description(BOT_DESC)
