@@ -5,7 +5,7 @@ from credentials import *
 
 from modules.reminder.reminder import crackerbarrel_reminder
 from modules.doodle.doodle import set_holiday_doodle
-from modules.afk_mover.move_afk import afk_mover
+from modules.afk_mover.afk_mover import afk_mover
 
 from modules.games import games, AccountDB
 from modules.games.configuration import ACCOUNTS_DB_NAME
