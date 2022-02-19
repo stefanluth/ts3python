@@ -1,2 +1,2 @@
-from modules.time_tracker.ProfilesDB import ProfilesDB
-from modules.time_tracker.WordpressDB import WordpressDB
+from modules.time_tracker.profiles_db import ProfilesDB
+from modules.time_tracker.wordpress_db import WordpressDB

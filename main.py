@@ -1,16 +1,19 @@
 import threading
 
-from configuration import BOT_NAME, BOT_DESC, ACCOUNTS_DB_NAME, PROFILES_DB_NAME
+from configuration import BOT_NAME, BOT_DESC
 from credentials import *
 
-from modules.reminder import crackerbarrel_reminder
-from modules.doodle import set_holiday_doodle
-from modules.move_afk import move_afk
+from modules.reminder.reminder import crackerbarrel_reminder
+from modules.doodle.doodle import set_holiday_doodle
+from modules.afk_mover.move_afk import afk_mover
 
 from modules.games import games, AccountDB
-from modules.time_tracker import time_tracker, wordpress, ProfilesDB, WordpressDB
+from modules.games.configuration import ACCOUNTS_DB_NAME
 
-from TS3Bot import TS3Bot
+from modules.time_tracker import time_tracker, wordpress, ProfilesDB, WordpressDB
+from modules.time_tracker.configuration import PROFILES_DB_NAME
+
+from ts3bot import TS3Bot
 
 
 def main():
@@ -30,7 +33,7 @@ def main():
 
     crackerbarrel_reminder_thread = threading.Thread(target=crackerbarrel_reminder, kwargs={'bot': bot})
     holiday_doodle_thread = threading.Thread(target=set_holiday_doodle, kwargs={'bot': bot})
-    move_afk_thread = threading.Thread(target=move_afk, kwargs={'bot': bot})
+    move_afk_thread = threading.Thread(target=afk_mover, kwargs={'bot': bot})
 
     games_thread = threading.Thread(target=games.start,
                                     kwargs={
@@ -38,13 +41,13 @@ def main():
                                         'database': accounts_db,
                                     })
 
-    time_measurement_thread = threading.Thread(target=time_tracker.start,
+    time_measurement_thread = threading.Thread(target=time_tracker.start_tracker,
                                                kwargs={
                                                    'bot': bot,
                                                    'database': profile_db,
                                                })
 
-    wordpress_update_thread = threading.Thread(target=wordpress.update,
+    wordpress_update_thread = threading.Thread(target=wordpress.update_post,
                                                kwargs={
                                                    'profile_db': profile_db,
                                                    'wordpress_db': wordpress_db,

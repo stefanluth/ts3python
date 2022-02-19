@@ -24,7 +24,8 @@ Use the `credentials.example.py` as a template.
 
 ### 2. Create configuration.py (optional)
 
-Use the `configuration.example.py` as a template.
+Use the `configuration.example.py` as templates. Place each `configuration.py` in the same directory as the 
+`configuration.example.py`.
 
 ### Example
 
@@ -48,7 +49,7 @@ bot.exit()
 
 ## Modules
 The project used to be limited to the `TS3Bot` and `TS3Query` classes but as I worked on it,
-I added modules I thought others would want to use as well, especially the `move_afk` module.
+I added modules I thought others would want to use as well, especially the `afk_mover` module.
 <br><br>
 The other modules - namely `time_tracker`, `reminder`, `doodle` and `wordpress` -
 are rather specific for my circle of friends' TS3 server:

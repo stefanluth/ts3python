@@ -1,13 +1,13 @@
 import time
 
-from configuration import WORDPRESS_UPDATE_INTERVAL_SECONDS
+from .configuration import WORDPRESS_UPDATE_INTERVAL_SECONDS
 
-from modules.time_tracker.HTMLTable import HTMLTable
-from modules.time_tracker.ProfilesDB import ProfilesDB
-from modules.time_tracker.WordpressDB import WordpressDB
+from modules.time_tracker.html_table import HTMLTable
+from modules.time_tracker.profiles_db import ProfilesDB
+from modules.time_tracker.wordpress_db import WordpressDB
 
 
-def update(profile_db: ProfilesDB, wordpress_db: WordpressDB):
+def update_post(profile_db: ProfilesDB, wordpress_db: WordpressDB):
     while 1:
         table = HTMLTable(columns=5)
         table.add_header('Rang', 'Name', 'Aktiv', 'Abwesend', 'Gesamt')
@@ -25,9 +25,9 @@ def update(profile_db: ProfilesDB, wordpress_db: WordpressDB):
             table.add_row(
                 rank,
                 profile['nickname'],
-                __format_time_from_seconds(profile['connected_total'] - profile['connected_afk']),
-                __format_time_from_seconds(profile['connected_afk']),
-                __format_time_from_seconds(profile['connected_total'])
+                _format_time_from_seconds(profile['connected_total'] - profile['connected_afk']),
+                _format_time_from_seconds(profile['connected_afk']),
+                _format_time_from_seconds(profile['connected_total'])
             )
 
         table_html = table.generate()
@@ -36,7 +36,7 @@ def update(profile_db: ProfilesDB, wordpress_db: WordpressDB):
         time.sleep(WORDPRESS_UPDATE_INTERVAL_SECONDS)
 
 
-def __format_time_from_seconds(seconds):
+def _format_time_from_seconds(seconds):
     minutes, seconds = divmod(int(seconds), 60)
     hours, minutes = divmod(minutes, 60)
     return f'{hours}:{minutes:02}:{seconds:02}'

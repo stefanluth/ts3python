@@ -1,8 +1,8 @@
 from sqlite3 import OperationalError
 import time
 
-from Client import Client
-from SQLiteDB import SQLiteDB
+from client import Client
+from sqlite_db import SQLiteDB
 
 
 class ProfilesDB(SQLiteDB):

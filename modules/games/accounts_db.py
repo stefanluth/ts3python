@@ -1,6 +1,6 @@
 from sqlite3 import OperationalError
-from SQLiteDB import SQLiteDB
-from configuration import ACCOUNT_START_BALANCE
+from sqlite_db import SQLiteDB
+from .configuration import ACCOUNT_START_BALANCE
 
 
 class AccountDB(SQLiteDB):

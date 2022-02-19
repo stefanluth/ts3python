@@ -1,1 +1,1 @@
-from modules.games.AccountDB import AccountDB
+from modules.games.accounts_db import AccountDB

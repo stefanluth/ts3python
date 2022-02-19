@@ -1,7 +1,7 @@
-from Client import Client
-from Channel import Channel
-from Message import Message
-from TS3Query import TS3Query
+from client import Client
+from channel import Channel
+from message import Message
+from ts3query import TS3Query
 
 
 def dict_to_parameters(parameters: dict):
