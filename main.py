@@ -31,7 +31,7 @@ def main():
     profile_db = ProfilesDB(PROFILES_DB_NAME)
     wordpress_db = WordpressDB(MYSQL_HOST, MYSQL_DB_NAME, MYSQL_USER, MYSQL_PW, 'stats')
 
-    crackerbarrel_reminder_thread = threading.Thread(target=reminder.crackerbarrel_reminder, kwargs={'bot': bot})
+    crackerbarrel_reminder_thread = threading.Thread(target=reminder.check_crackerbarrel_reminder, kwargs={'bot': bot})
     holiday_doodle_thread = threading.Thread(target=doodle.set_holiday_doodle, kwargs={'bot': bot})
     move_afk_thread = threading.Thread(target=afk_mover.move_afk, kwargs={'bot': bot})
 

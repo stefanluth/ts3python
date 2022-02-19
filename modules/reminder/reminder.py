@@ -15,7 +15,7 @@ days = {
 }
 
 
-def crackerbarrel_reminder(bot: TS3Bot):
+def check_crackerbarrel_reminder(bot: TS3Bot):
     today = datetime.datetime.today()
     wednesday = days['Wednesday']
     last_wednesday = last_weekday_of_month(wednesday, today.year, today.month)
