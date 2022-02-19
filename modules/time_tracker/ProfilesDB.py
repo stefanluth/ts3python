@@ -1,5 +1,5 @@
-from datetime import datetime
 from sqlite3 import OperationalError
+import time
 
 from Client import Client
 from SQLiteDB import SQLiteDB
@@ -35,7 +35,7 @@ class ProfilesDB(SQLiteDB):
                      f'"{client.uid}",'
                      f'"{client.b64_uid}",'
                      f'"{client.name}",'
-                     f'{int(datetime.now().timestamp())},'
+                     f'{int(time.time())},'
                      f'0.0,'
                      f'0.0,'
                      f'false)')
