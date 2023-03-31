@@ -1,3 +1,5 @@
+# This repository is archived. Please use the [new version](https://github.com/stefanluth/ts3python2).
+
 # TeamSpeak 3 Python Interface
 
 ## About
